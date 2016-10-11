@@ -1,6 +1,7 @@
 package today.comeet.android.comeet.fragment;
 
 import android.content.Intent;
+import android.content.pm.PackageInstaller;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,25 +21,44 @@ import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import today.comeet.android.comeet.R;
 import today.comeet.android.comeet.activity.HomeActivity;
+
+import static android.R.id.list;
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class FbLoginFragment extends Fragment {
 
-    private TextView mTextDetails;
+    private TextView textDetails;
 
-    private CallbackManager mCallbackManager;
-    private AccessTokenTracker mTokenTracker;
-    private ProfileTracker mProfileTracker;
-    private FacebookCallback<LoginResult> mFacebookCallback = new FacebookCallback<LoginResult>() {
+    private CallbackManager callbackManager;
+    private AccessTokenTracker tokenTracker;
+    private ProfileTracker profileTracker;
+    private String[] userPermission = {"public_profile", "email", "user_birthday", "user_location"};
+
+    private FacebookCallback<LoginResult> facebookCallback = new FacebookCallback<LoginResult>() {
         @Override
         public void onSuccess(LoginResult loginResult) {
             AccessToken accessToken = loginResult.getAccessToken();
-            Log.d("FBLogin", "onSuccess"+accessToken);
+            Log.d("FBLogin", "User ID: "
+                    + accessToken.getUserId()
+                    + "\n" +
+                    "Auth Token: "
+                    + accessToken.getToken()
+                    + "\n" +
+                    "Permissions"
+                    + accessToken.getPermissions());
             Profile profile = Profile.getCurrentProfile();
+
+            if(accessToken.getPermissions().size()==userPermission.length){
+                Log.d("FBLogin", "testPermissionsWorking");
+            }
             if(profile != null){
                 Intent intent = new Intent(getActivity(), HomeActivity.class);
                 startActivity(intent);
@@ -47,10 +67,12 @@ public class FbLoginFragment extends Fragment {
 
         @Override
         public void onCancel() {
+            Log.d("FBLogin", "onCancel");
         }
 
         @Override
         public void onError(FacebookException error) {
+            Log.d("FBLogin", "onError");
         }
     };
 
@@ -63,25 +85,25 @@ public class FbLoginFragment extends Fragment {
         setupTokenTracker();
         setupProfileTracker();
 
-        mTokenTracker.startTracking();
-        mProfileTracker.startTracking();
-        mCallbackManager= CallbackManager.Factory.create();
+        tokenTracker.startTracking();
+        profileTracker.startTracking();
+        callbackManager = CallbackManager.Factory.create();
     }
     private void setupTokenTracker() {
-        mTokenTracker = new AccessTokenTracker() {
+        tokenTracker = new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
-                Log.d("FBLogin", "" + currentAccessToken);
+                Log.d("FBLogin", "CurrentAccessToken" + currentAccessToken);
             }
         };
     }
 
     private void setupProfileTracker() {
-        mProfileTracker = new ProfileTracker() {
+        profileTracker = new ProfileTracker() {
             @Override
             protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
-                Log.d("FBLogin", "" + currentProfile);
-                mTextDetails.setText(constructWelcomeMessage(currentProfile));
+                Log.d("CurrentProfile", "" + currentProfile);
+                textDetails.setText(constructWelcomeMessage(currentProfile));
             }
         };
     }
@@ -102,18 +124,23 @@ public class FbLoginFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
         LoginButton loginButton = (LoginButton) view.findViewById(R.id.login_button);
-        loginButton.setReadPermissions("email");
+        loginButton.setReadPermissions(userPermission);
         // If using in a fragment
         loginButton.setFragment(this);
         // Other app specific specialization
-        loginButton.registerCallback(mCallbackManager, mFacebookCallback);
+        loginButton.registerCallback(callbackManager, facebookCallback);
 
-        mTextDetails = (TextView) view.findViewById(R.id.text_details);
+        textDetails = (TextView) view.findViewById(R.id.text_details);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        mCallbackManager.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        profileTracker.stopTracking();
     }
 }
