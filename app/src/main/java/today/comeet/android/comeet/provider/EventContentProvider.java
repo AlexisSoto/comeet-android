@@ -22,7 +22,7 @@ public class EventContentProvider extends ContentProvider {
     //:::::::::::::::::::::::::://
 //:: URI d'exposition
 //:::::::::::::::::::::::::://
-    private static String test = MainActivity.PACKAGE_NAME;
+
     public static final Uri CONTENT_URL = Uri.parse("content://today.comeet.android.comeet/elements");
 
     // Constantes pour identifier les requetes
