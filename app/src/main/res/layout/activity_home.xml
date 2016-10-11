@@ -83,5 +83,13 @@
         android:onClick="btn_create_event"
         android:layout_margin="@dimen/fab_margin" />
 
+    <FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".activity.HomeActivity"
+        android:id="@+id/container">
+    </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>
