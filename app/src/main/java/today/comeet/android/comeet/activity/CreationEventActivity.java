@@ -3,7 +3,9 @@ package today.comeet.android.comeet.activity;
 import android.app.DatePickerDialog;
 import android.app.NotificationManager;
 import android.app.TimePickerDialog;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +23,7 @@ import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 
 import today.comeet.android.comeet.helper.DBHelper;
 import today.comeet.android.comeet.R;
+import today.comeet.android.comeet.provider.EventContentProvider;
 
 
 public class CreationEventActivity extends AppCompatActivity {
@@ -86,10 +89,18 @@ public class CreationEventActivity extends AppCompatActivity {
         }
         String dateEtHeure = date+" "+heure;
         Log.d("Creation", "date et heure :"+dateEtHeure);
-        boolean isInserted = database.insertData(eventName.getText().toString(),
-                eventDescription.getText().toString(),
-                place.getAddress().toString(), dateEtHeure,place.getLatLng().latitude, place.getLatLng().longitude );
-        Log.d("Creation ", "is insertion okay? :"+isInserted);
+
+        // Ajout dans la base de données
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(DBHelper.COL_2, eventName.getText().toString());
+        contentValues.put(DBHelper.COL_3, eventDescription.getText().toString());
+        contentValues.put(DBHelper.COL_4,  place.getAddress().toString());
+        contentValues.put(DBHelper.COL_5, dateEtHeure);
+        contentValues.put(DBHelper.COL_6, place.getLatLng().latitude);
+        contentValues.put(DBHelper.COL_7, place.getLatLng().longitude);
+
+        Uri result = getContentResolver().insert(EventContentProvider.CONTENT_URL, contentValues);
+        Log.d ("creation", "creation result :"+result);
 
         notification();
 

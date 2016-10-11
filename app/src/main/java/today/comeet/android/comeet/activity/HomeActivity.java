@@ -4,15 +4,18 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -216,6 +219,23 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void btn_create_event  (View view) {
         Toast.makeText(getApplicationContext(), "Page creation evenement", Toast.LENGTH_LONG).show();
         startActivity(new Intent(activityContext, CreationEventActivity.class));
+    }
+
+    // boutton de test pour lire des données dans la bdd SQLite
+    public void btn_test_read_data  (View view) {Cursor cursor =
+            getContentResolver().query(Uri.parse("content://today.comeet.android.comeet/elements"), null, null,
+                    null, null);
+        StringBuffer buffer = new StringBuffer();
+        while (cursor.moveToNext()) {
+            buffer.append("Id :"+ cursor.getString(0)+"\n");
+            buffer.append("Name :"+ cursor.getString(1)+"\n");
+            buffer.append("Description :"+ cursor.getString(2)+"\n");
+            buffer.append("Localisation :"+ cursor.getString(3)+"\n\n");
+            buffer.append("Date :"+ cursor.getString(4)+"\n\n");
+            buffer.append("Lattitude :"+ cursor.getDouble(5)+"\n\n");
+            buffer.append("Longitude :"+ cursor.getDouble(6)+"\n\n");
+        }
+        Log.d("test", "retour :" + buffer);
     }
 
 
