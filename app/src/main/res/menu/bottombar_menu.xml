@@ -13,7 +13,7 @@
         android:title="" />
     <item
         android:id="@+id/bottomBarItemThird"
-        android:icon="@drawable/ic_looks_3_black_24dp"
+        android:icon="@drawable/ic_tune_white_24dp"
         android:title="" />
 </menu>
 <!--Steps-->
