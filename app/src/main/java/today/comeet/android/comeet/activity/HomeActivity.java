@@ -299,7 +299,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     // boutton de test pour lire des données dans la bdd SQLite
-    public void btn_test_read_data  (View view) {Cursor cursor =
+    public void btn_test_read_data  (View view) {
+
+        Cursor cursor =
             getContentResolver().query(Uri.parse("content://today.comeet.android.comeet/elements"), null, null,
                     null, null);
         StringBuffer buffer = new StringBuffer();

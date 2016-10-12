@@ -42,6 +42,10 @@
 
 
         <activity android:name=".activity.CreationEventActivity"  android:label="Création Evenement"></activity>
+       <provider
+           android:authorities="today.comeet.android.comeet"
+           android:name=".provider.EventContentProvider"/>
+
     </application>
 
 </manifest>
