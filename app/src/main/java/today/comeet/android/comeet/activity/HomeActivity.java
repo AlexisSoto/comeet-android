@@ -15,6 +15,7 @@ import android.provider.Settings;
 import android.support.annotation.IdRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -38,11 +39,12 @@ import java.util.List;
 
 import today.comeet.android.comeet.R;
 import today.comeet.android.comeet.fragment.FirstFragment;
+import today.comeet.android.comeet.fragment.GoogleMapFragment;
 import today.comeet.android.comeet.fragment.SecondFragment;
 import today.comeet.android.comeet.fragment.ThirdFragment;
 import com.roughike.bottombar.OnMenuTabClickListener;
 
-public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class HomeActivity extends AppCompatActivity {
 
     private LocationManager locationManager;
     private LocationListener locationListener;
@@ -50,9 +52,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private double latitude;
     private double longitude;
     private String provider;
-    private TextView txt_retourgps;
     private Context activityContext;
-    private GoogleMap mMap;
     FloatingActionButton btn_plus;
     FloatingActionButton bouttonplus;
     FloatingActionButton floatingActionButton1, floatingActionButton2, floatingActionButton3;
@@ -72,18 +72,14 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Loading home content layout
         setContentView(R.layout.activity_home);
 
+        // Ajout du fragment de Google Map
+        FragmentManager fm = getSupportFragmentManager();
+        fm.beginTransaction().replace(R.id.container2, new GoogleMapFragment()).commit();
+
 
         // Récupère divers éléments du xml (à partir de leur id)
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         btn_position = (Button) findViewById(R.id.btn_position);
-        txt_retourgps = (TextView) findViewById(R.id.text_retour);
-
-        // Permet d'afficher la map
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-        setSupportActionBar(toolbar);
-        activityContext = this;
 
         // Création du menu en bas de la page
         /*bouttonplus = (FloatingActionMenu) findViewById(R.id.material_design_android_floating_action_menu);
@@ -121,12 +117,12 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 latitude = location.getLatitude();
                 longitude = location.getLongitude();
 
-                txt_retourgps.append("\nlattitude :" + latitude);
+                /*txt_retourgps.append("\nlattitude :" + latitude);
                 txt_retourgps.append("\nlongitude :" + longitude);
 
                 LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                 CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 16);
-                mMap.animateCamera(cameraUpdate);
+                mMap.animateCamera(cameraUpdate);*/
                 if (ActivityCompat.checkSelfPermission(activityContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activityContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     // TODO: Consider calling
                     //    ActivityCompat#requestPermissions
@@ -264,38 +260,17 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
-    @Override
+   /* @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
-        // Paramètrage de la carte (avec les boutons zoom, localisation ...)
-        mMap.getUiSettings().setZoomControlsEnabled(true);
-        mMap.getUiSettings().setMyLocationButtonEnabled(true);
-        mMap.getUiSettings().setCompassEnabled(true);
-        mMap.getUiSettings().setRotateGesturesEnabled(true);
-        mMap.getUiSettings().setZoomGesturesEnabled(true);
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        mMap.setMyLocationEnabled(true);
         // Demande de récupérer la position de l'utilisateur
 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 
-    }
+    }*/
 
     public void btn_create_event  (View view) {
         Toast.makeText(getApplicationContext(), "Page creation evenement", Toast.LENGTH_LONG).show();
-        startActivity(new Intent(activityContext, CreationEventActivity.class));
+        startActivity(new Intent(getApplicationContext(), CreationEventActivity.class));
     }
 
     // boutton de test pour lire des données dans la bdd SQLite
