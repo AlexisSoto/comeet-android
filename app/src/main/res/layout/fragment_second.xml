@@ -3,11 +3,4 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="today.comeet.android.comeet.fragment.SecondFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Second fragment"/>
-
 </FrameLayout>

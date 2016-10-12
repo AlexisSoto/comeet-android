@@ -5,16 +5,16 @@
     <!--Every item for another tab-->
     <item
         android:id="@+id/bottomBarItemOne"
-        android:icon="@drawable/ic_looks_one_black_24dp"
-        android:title="First item" />
+        android:icon="@drawable/ic_home_white_24dp"
+        android:title="" />
     <item
         android:id="@+id/bottomBarItemSecond"
-        android:icon="@drawable/ic_looks_two_black_24dp"
-        android:title="Second item" />
+        android:icon="@drawable/ic_people_white_24dp"
+        android:title="" />
     <item
         android:id="@+id/bottomBarItemThird"
         android:icon="@drawable/ic_looks_3_black_24dp"
-        android:title="Third item" />
+        android:title="" />
 </menu>
 <!--Steps-->
 <!--1. To add new tab paste new item block-->
