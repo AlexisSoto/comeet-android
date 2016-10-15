@@ -17,6 +17,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -71,6 +73,17 @@ public class HomeActivity extends AppCompatActivity {
 
         // Loading home content layout
         setContentView(R.layout.activity_home);
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.myListSimple);
+// fill the list items
+        List<String> items = new ArrayList<String>();
+        for (int i = 0; i < 15; i++) {
+            // new item
+            items.add("test " + i);
+        }
+        recyclerView.setAdapter(new RecyclerSimpleViewAdapter(items, android.R.layout.simple_list_item_1));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
 
         // Ajout du fragment de Google Map
         FragmentManager fm = getSupportFragmentManager();
@@ -294,3 +307,4 @@ public class HomeActivity extends AppCompatActivity {
 
 
 }
+
