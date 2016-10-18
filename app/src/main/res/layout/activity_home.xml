@@ -67,6 +67,31 @@
             fab:fab_label="Création d'événement"
             fab:fab_size="mini" />
     </com.github.clans.fab.FloatingActionMenu-->
+
+    <FrameLayout
+    android:id="@+id/container2"
+    android:layout_width="match_parent"
+    android:layout_height="294dp"
+    android:background="@android:color/transparent"
+    android:layout_marginBottom="218dp"
+    android:layout_above="@+id/btn_position"
+    android:layout_alignParentStart="true" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".activity.HomeActivity"
+        android:id="@+id/container">
+
+        <FrameLayout
+            android:id="@+id/container3"
+            android:layout_width="255dp"
+            android:layout_height="469dp"
+            android:background="@android:color/transparent"
+            android:layout_marginBottom="218dp"
+            android:layout_alignParentStart="true" />
+    </FrameLayout>
+
     <android.support.design.widget.FloatingActionButton
         app:fabSize="normal"
         android:id="@+id/btn_plusss"
@@ -74,26 +99,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
-        android:layout_gravity="bottom|end"
+        android:layout_gravity="center_vertical|left"
         android:onClick="btn_create_event"
-        android:layout_margin="@dimen/fab_margin" />
-
-    <FrameLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".activity.HomeActivity"
-        android:id="@+id/container">
-    </FrameLayout>
-
-    <FrameLayout
-        android:id="@+id/container2"
-        android:layout_width="match_parent"
-        android:layout_height="294dp"
-        android:background="@android:color/transparent"
-        android:layout_marginBottom="218dp"
-        android:layout_above="@+id/btn_position"
-        android:layout_alignParentStart="true" />
+        android:layout_margin="@dimen/fab_margin"
+        app:layout_anchor="@+id/container"
+        app:layout_anchorGravity="center_vertical|right" />
 
 </android.support.design.widget.CoordinatorLayout>
