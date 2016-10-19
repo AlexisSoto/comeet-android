@@ -1,5 +1,6 @@
 package today.comeet.android.comeet.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import today.comeet.android.comeet.R;
+import today.comeet.android.comeet.activity.EventDetail;
 import today.comeet.android.comeet.listener.RecyclerItemClickListener;
 import today.comeet.android.comeet.adapter.RecyclerSimpleViewAdapter;
 
@@ -43,9 +45,15 @@ public class EventRecyclerViewFragment extends Fragment {
         recyclerView.setAdapter(new RecyclerSimpleViewAdapter(items, android.R.layout.simple_list_item_1));
         recyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getContext(), new RecyclerItemClickListener.OnItemClickListener() {
+                    // Quand on clique sur la recyclerview
                     @Override public void onItemClick(View view, int position) {
                         // TODO Handle item click
                         Log.d("test", "position :" + position);
+
+                        // Affiche l'événement correspondant à l'id de la recyclerview
+                        Intent intent = new Intent(getActivity(), EventDetail.class);
+                        intent.putExtra("id", position );
+                        startActivity(intent);
                     }
                 })
         );

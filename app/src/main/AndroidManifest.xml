@@ -37,15 +37,19 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
 
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <activity
+            android:name=".activity.CreationEventActivity"
+            android:label="Création Evenement" />
 
+        <provider
+            android:name=".provider.EventContentProvider"
+            android:authorities="today.comeet.android.comeet" />
 
-        <activity android:name=".activity.CreationEventActivity"  android:label="Création Evenement"></activity>
-       <provider
-           android:authorities="today.comeet.android.comeet"
-           android:name=".provider.EventContentProvider"/>
-
+        <activity android:name=".activity.EventDetail"></activity>
     </application>
 
 </manifest>
