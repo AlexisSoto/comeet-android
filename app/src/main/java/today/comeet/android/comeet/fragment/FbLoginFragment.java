@@ -2,6 +2,7 @@ package today.comeet.android.comeet.fragment;
 
 import android.content.Intent;
 import android.content.pm.PackageInstaller;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -88,6 +89,13 @@ public class FbLoginFragment extends Fragment {
         tokenTracker.startTracking();
         profileTracker.startTracking();
         callbackManager = CallbackManager.Factory.create();
+
+        AccessTokenTracker accessTokenTracker = new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken newAccessToken) {
+                updateWithToken(newAccessToken);
+            }
+        };
     }
     private void setupTokenTracker() {
         tokenTracker = new AccessTokenTracker() {
@@ -96,6 +104,13 @@ public class FbLoginFragment extends Fragment {
                 Log.d("FBLogin", "CurrentAccessToken" + currentAccessToken);
             }
         };
+    }
+
+    private void updateWithToken(AccessToken currentAccessToken) {
+        // Si token != null alors utilisateur connecté donc on charge HomeActivity
+        if (currentAccessToken != null) {
+            startActivity(new Intent(this.getContext(), HomeActivity.class));
+        }
     }
 
     private void setupProfileTracker() {
@@ -119,7 +134,8 @@ public class FbLoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_main, container, false);
+
+            return inflater.inflate(R.layout.fragment_main, container, false);
     }
     public void onViewCreated(View view, Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);

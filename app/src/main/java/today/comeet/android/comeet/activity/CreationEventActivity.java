@@ -35,7 +35,6 @@ public class CreationEventActivity extends AppCompatActivity {
     String date;
     String heure;
     Place place;
-    DBHelper database;
 
 
     @Override
@@ -44,8 +43,6 @@ public class CreationEventActivity extends AppCompatActivity {
         setContentView(R.layout.activity_creation_event);
         eventName = (EditText) findViewById(R.id.event_name);
         eventDescription = (EditText) findViewById(R.id.event_description);
-        // Initialisation de la database
-        database= new DBHelper(this);
     }
 
     // Boutton pour choisir la date
