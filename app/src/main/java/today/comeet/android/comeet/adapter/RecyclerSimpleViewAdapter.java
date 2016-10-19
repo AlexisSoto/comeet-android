@@ -1,4 +1,4 @@
-package today.comeet.android.comeet.helper;
+package today.comeet.android.comeet.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -74,10 +74,10 @@ public class RecyclerSimpleViewAdapter extends RecyclerView.Adapter<RecyclerSimp
         } else {
             holder.itemView.setBackgroundResource(R.color.colorPrimaryDark);
         }
+
     }
     /**
      *
-     * @author florian
      * Class viewHolder
      * Hold an textView
      */
