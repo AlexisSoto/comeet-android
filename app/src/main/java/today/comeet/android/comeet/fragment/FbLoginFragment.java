@@ -11,6 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
@@ -22,8 +28,20 @@ import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import today.comeet.android.comeet.R;
@@ -46,7 +64,7 @@ public class FbLoginFragment extends Fragment {
     private FacebookCallback<LoginResult> facebookCallback = new FacebookCallback<LoginResult>() {
         @Override
         public void onSuccess(LoginResult loginResult) {
-            AccessToken accessToken = loginResult.getAccessToken();
+            final AccessToken accessToken = loginResult.getAccessToken();
             Log.d("FBLogin", "User ID: "
                     + accessToken.getUserId()
                     + "\n" +
@@ -57,9 +75,36 @@ public class FbLoginFragment extends Fragment {
                     + accessToken.getPermissions());
             Profile profile = Profile.getCurrentProfile();
 
-            if(accessToken.getPermissions().size()==userPermission.length){
+            if (accessToken.getPermissions().size() == userPermission.length) {
                 Log.d("FBLogin", "testPermissionsWorking");
             }
+            
+            // Instantiate the RequestQueue.
+            RequestQueue queue = Volley.newRequestQueue(getContext());
+            String url ="http://api.comeet.today:8080/login";
+            StringRequest MyStringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    //This code is executed if the server responds, whether or not the response contains data.
+                    //The String 'response' contains the server's response.
+                    Log.d("test", "reponse: "+response.toString());
+                }
+            }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //This code is executed if there is an error.
+                }
+            }) {
+                protected Map<String, String> getParams() {
+                    Map<String, String> MyData = new HashMap<String, String>();
+                    MyData.put("fbToken", accessToken.getToken()); //Add the data you'd like to send to the server.
+                    return MyData;
+                }
+            };
+
+            queue.add(MyStringRequest);
+
+
             if(profile != null){
                 Intent intent = new Intent(getActivity(), HomeActivity.class);
                 startActivity(intent);
