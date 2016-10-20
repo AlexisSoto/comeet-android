@@ -46,6 +46,7 @@ import java.util.Set;
 
 import today.comeet.android.comeet.R;
 import today.comeet.android.comeet.activity.HomeActivity;
+import today.comeet.android.comeet.helper.ApiHelper;
 
 import static android.R.id.list;
 
@@ -59,7 +60,7 @@ public class FbLoginFragment extends Fragment {
     private CallbackManager callbackManager;
     private AccessTokenTracker tokenTracker;
     private ProfileTracker profileTracker;
-    private String[] userPermission = {"public_profile", "email", "user_birthday", "user_location"};
+    private String[] userPermission = {"public_profile", "email", "user_birthday", "user_location", "user_friends"};
 
     private FacebookCallback<LoginResult> facebookCallback = new FacebookCallback<LoginResult>() {
         @Override
@@ -78,32 +79,10 @@ public class FbLoginFragment extends Fragment {
             if (accessToken.getPermissions().size() == userPermission.length) {
                 Log.d("FBLogin", "testPermissionsWorking");
             }
-            
-            // Instantiate the RequestQueue.
-            RequestQueue queue = Volley.newRequestQueue(getContext());
-            String url ="http://api.comeet.today:8080/login";
-            StringRequest MyStringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    //This code is executed if the server responds, whether or not the response contains data.
-                    //The String 'response' contains the server's response.
-                    Log.d("test", "reponse: "+response.toString());
-                }
-            }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    //This code is executed if there is an error.
-                }
-            }) {
-                protected Map<String, String> getParams() {
-                    Map<String, String> MyData = new HashMap<String, String>();
-                    MyData.put("fbToken", accessToken.getToken()); //Add the data you'd like to send to the server.
-                    return MyData;
-                }
-            };
 
-            queue.add(MyStringRequest);
-
+            // Envoie du token au serveur.
+            ApiHelper apihelper= new ApiHelper(getContext());
+            apihelper.sendFbToken(accessToken.getToken());
 
             if(profile != null){
                 Intent intent = new Intent(getActivity(), HomeActivity.class);
