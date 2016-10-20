@@ -207,11 +207,6 @@ public class HomeActivity extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        if (fragNavController.getCurrentStack().size() > 1) {
-            fragNavController.pop();
-        } else {
-            super.onBackPressed();
-        }
     }
     @Override
     protected void onSaveInstanceState(Bundle outState) {
