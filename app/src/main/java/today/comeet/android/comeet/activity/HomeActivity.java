@@ -76,17 +76,6 @@ public class HomeActivity extends AppCompatActivity {
         // Loading home content layout
         setContentView(R.layout.activity_home);
 
-        FragmentManager mFragmentManager;
-        mFragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = mFragmentManager.beginTransaction();
-        transaction.replace(R.id.container3, new EventRecyclerViewFragment());
-        transaction.commit();
-
-        // Ajout du fragment de Google Map
-        FragmentManager fm = getSupportFragmentManager();
-        fm.beginTransaction().replace(R.id.container2, new GoogleMapFragment()).commit();
-
-
         // Récupère divers éléments du xml (à partir de leur id)
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         btn_position = (Button) findViewById(R.id.btn_position);

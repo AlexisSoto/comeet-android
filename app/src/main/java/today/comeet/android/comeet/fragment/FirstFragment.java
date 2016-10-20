@@ -3,19 +3,29 @@ package today.comeet.android.comeet.fragment;
 /**
  * Created by Vincent on 11/10/2016.
  */
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 
 import today.comeet.android.comeet.R;
+import today.comeet.android.comeet.activity.CreationEventActivity;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
 public class FirstFragment extends Fragment {
+    FloatingActionButton buttonEventCreate;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     public static FirstFragment newInstance(int instance) {
         Bundle args = new Bundle();
@@ -32,4 +42,19 @@ public class FirstFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_first, container, false);
     }
 
+    public void onStart() {
+        super.onStart();
+        FragmentManager fm = getFragmentManager();
+        fm.beginTransaction().replace(R.id.Events_Fragment, new EventRecyclerViewFragment()).commit();
+        fm.beginTransaction().replace(R.id.Map_Fragment, new GoogleMapFragment()).commit();
+
+        /*buttonEventCreate = (FloatingActionButton) getView().findViewById(R.id.Button_CreateEvent);
+        buttonEventCreate.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(getContext(), CreationEventActivity.class));
+                    }
+                });*/
+    }
 }

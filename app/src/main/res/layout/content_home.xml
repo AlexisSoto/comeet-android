@@ -20,25 +20,7 @@
         android:layout_above="@+id/button"
         android:layout_toEndOf="@+id/button" /-->
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="test lecture data"
-        android:onClick="btn_test_read_data"
 
-        android:layout_alignParentBottom="true"
-        android:layout_toStartOf="@+id/btn_position"
-        android:id="@+id/button" />
-
-
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Get Position"
-        android:id="@+id/btn_position"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
     <!--include layout="@layout/activity_maps"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" /-->
