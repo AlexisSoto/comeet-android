@@ -12,6 +12,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.facebook.stetho.Stetho;
+
 import today.comeet.android.comeet.fragment.FbLoginFragment;
 import today.comeet.android.comeet.helper.DBHelper;
 import today.comeet.android.comeet.R;
@@ -22,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Stetho.initializeWithDefaults(this); // start Stetho for debug
         mFragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
         transaction.replace(android.R.id.content, new FbLoginFragment());
