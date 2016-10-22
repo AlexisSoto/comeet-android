@@ -15,25 +15,14 @@ import android.provider.Settings;
 import android.support.annotation.IdRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
 import com.ncapdevi.fragnav.FragNavController;
 import com.roughike.bottombar.BottomBar;
 
@@ -41,11 +30,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import today.comeet.android.comeet.R;
-import today.comeet.android.comeet.fragment.EventRecyclerViewFragment;
 import today.comeet.android.comeet.fragment.FirstFragment;
-import today.comeet.android.comeet.fragment.GoogleMapFragment;
 import today.comeet.android.comeet.fragment.SecondFragment;
-import today.comeet.android.comeet.fragment.ThirdFragment;
+import today.comeet.android.comeet.fragment.ProfileFragment;
 import com.roughike.bottombar.OnMenuTabClickListener;
 
 public class HomeActivity extends AppCompatActivity {
@@ -169,7 +156,7 @@ public class HomeActivity extends AppCompatActivity {
         //add fragments to list
         fragments.add(FirstFragment.newInstance(0));
         fragments.add(SecondFragment.newInstance(0));
-        fragments.add(ThirdFragment.newInstance(0));
+        fragments.add(ProfileFragment.newInstance(0));
 
         //link fragments to container
         fragNavController = new FragNavController(getSupportFragmentManager(),R.id.container,fragments);
