@@ -103,7 +103,6 @@ public class EventContentProvider extends ContentProvider {
             Uri insertedId= ContentUris.withAppendedId(CONTENT_URL, id);
             // Notifie le changement de données
             getContext().getContentResolver().notifyChange(insertedId,null);
-            Log.d("creation","provider :"+insertedId);
             return insertedId;
         }
         return null;

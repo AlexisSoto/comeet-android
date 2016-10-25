@@ -36,13 +36,13 @@ public class EventDetail extends AppCompatActivity {
             idEventToPrint++;
         }
 
-        txtEventName = (TextView) findViewById(R.id.nameEvent) ;
+        txtEventName = (TextView) findViewById(R.id.nameEvent);
         txtEventDate = (TextView) findViewById(R.id.eventDate);
         txtEventDescription = (TextView) findViewById(R.id.descriptionEvent);
         txtEventLocalisation = (TextView) findViewById(R.id.eventlocalisation);
 
         // Loading Choosen Event
-        Cursor cursor = getContentResolver().query(Uri.parse("content://today.comeet.android.comeet/elements/"+idEventToPrint), null, null, null, null);
+        Cursor cursor = getContentResolver().query(Uri.parse("content://today.comeet.android.comeet/elements/" + idEventToPrint), null, null, null, null);
 
         while (cursor.moveToNext()) {
             eventName = cursor.getString(1);
@@ -54,6 +54,10 @@ public class EventDetail extends AppCompatActivity {
         txtEventName.append(eventName);
         txtEventDate.append(eventDate);
         txtEventDescription.append(eventDescription);
-        txtEventLocalisation.append(eventLocalisation);
+        if (eventLocalisation != null)
+            txtEventLocalisation.append(eventLocalisation);
+        else
+            txtEventLocalisation.append("Non définit");
+
     }
 }

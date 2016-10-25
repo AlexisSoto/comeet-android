@@ -72,33 +72,30 @@ public class CreationEventActivity extends AppCompatActivity {
 
     // Boutton pour créer un nouvel événement
     public void btn_new_event(View v) {
-        // Il faut récupérer les différents éléments (date,heures etc)
-        Log.d("Creation", "event_name recup: " + eventName.getText().toString());
-        Log.d("Creation", "event_description recup: " + eventDescription.getText().toString());
-        Log.d("Creation", "date recup: " + date);
-        Log.d("Creation", "heure recup: " + heure);
-        // Il faut s'assurer que place != null --> sinon erreur
-        if (place != null) {
-            Log.d("Creation", "Place: " + place.getAddress() + place.getPhoneNumber());
-        }
-        else {
-            Log.d("Creation", "place null");
-        }
-        String dateEtHeure = date+" "+heure;
-        Log.d("Creation", "date et heure :"+dateEtHeure);
+        String dateEtHeure = "";
+        if (date != null)
+            dateEtHeure += date;
+        if (heure != null)
+            dateEtHeure += " " + heure;
+
+        if (heure == null && date == null)
+            dateEtHeure = "Non définit";
 
         // Ajout dans la base de données
         ContentValues contentValues = new ContentValues();
-        contentValues.put(DBHelper.COL_2, eventName.getText().toString());
-        contentValues.put(DBHelper.COL_3, eventDescription.getText().toString());
-        contentValues.put(DBHelper.COL_4,  place.getAddress().toString());
+        if (eventName != null)
+            contentValues.put(DBHelper.COL_2, eventName.getText().toString());
+
+        if (eventDescription != null)
+            contentValues.put(DBHelper.COL_3, eventDescription.getText().toString());
+
         contentValues.put(DBHelper.COL_5, dateEtHeure);
-        contentValues.put(DBHelper.COL_6, place.getLatLng().latitude);
-        contentValues.put(DBHelper.COL_7, place.getLatLng().longitude);
-
+        if (place != null) {
+            contentValues.put(DBHelper.COL_4, place.getAddress().toString());
+            contentValues.put(DBHelper.COL_6, place.getLatLng().latitude);
+            contentValues.put(DBHelper.COL_7, place.getLatLng().longitude);
+        }
         Uri result = getContentResolver().insert(EventContentProvider.CONTENT_URL, contentValues);
-        Log.d ("creation", "creation result :"+result);
-
         notification();
 
     }
@@ -142,13 +139,13 @@ public class CreationEventActivity extends AppCompatActivity {
     }
 
     // Fonction pour faire une notification
-    private void notification(){
+    private void notification() {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("Comeet")
                 .setContentText("Création événement");
 
-        builder.setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 });
+        builder.setVibrate(new long[]{1000, 1000, 1000, 1000, 1000});
 
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         mNotificationManager.notify(1, builder.build());
