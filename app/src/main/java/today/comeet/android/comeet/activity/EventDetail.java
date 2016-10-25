@@ -5,16 +5,30 @@ import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import today.comeet.android.comeet.R;
 
 public class EventDetail extends AppCompatActivity {
     private int idEventToPrint;
+    /* Attributs de l'événement */
+    private String eventName;
+    private String eventDescription;
+    private String eventLocalisation;
+    private String eventDate;
+
+    /* Affichage des attributs */
+    private TextView txtEventName;
+    private TextView txtEventDescription;
+    private TextView txtEventLocalisation;
+    private TextView txtEventDate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_detail);
-
         Bundle extras = getIntent().getExtras();
         if (null != extras) {
             idEventToPrint = extras.getInt("id");
@@ -22,20 +36,24 @@ public class EventDetail extends AppCompatActivity {
             idEventToPrint++;
         }
 
+        txtEventName = (TextView) findViewById(R.id.nameEvent) ;
+        txtEventDate = (TextView) findViewById(R.id.eventDate);
+        txtEventDescription = (TextView) findViewById(R.id.descriptionEvent);
+        txtEventLocalisation = (TextView) findViewById(R.id.eventlocalisation);
+
         // Loading Choosen Event
-        Cursor cursor =
-                getContentResolver().query(Uri.parse("content://today.comeet.android.comeet/elements/"+idEventToPrint), null, null,
-                        null, null);
-        StringBuffer buffer = new StringBuffer();
+        Cursor cursor = getContentResolver().query(Uri.parse("content://today.comeet.android.comeet/elements/"+idEventToPrint), null, null, null, null);
+
         while (cursor.moveToNext()) {
-            buffer.append("Id :"+ cursor.getString(0)+"\n");
-            buffer.append("Evenement :"+ cursor.getString(1)+"\n");
-            buffer.append("Description :"+ cursor.getString(2)+"\n");
-            buffer.append("Localisation :"+ cursor.getString(3)+"\n\n");
-            buffer.append("Le :"+ cursor.getString(4));
-            buffer.append("Lattitude :"+ cursor.getDouble(5)+"\n\n");
-            buffer.append("Longitude :"+ cursor.getDouble(6)+"\n\n");
+            eventName = cursor.getString(1);
+            eventDescription = cursor.getString(2);
+            eventLocalisation = cursor.getString(3);
+            eventDate = cursor.getString(4);
         }
-        Log.d("retour", "retour: "+buffer);
+        // Printing in TextView
+        txtEventName.append(eventName);
+        txtEventDate.append(eventDate);
+        txtEventDescription.append(eventDescription);
+        txtEventLocalisation.append(eventLocalisation);
     }
 }

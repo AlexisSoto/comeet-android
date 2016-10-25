@@ -45,21 +45,11 @@ public class EventRecyclerViewFragment extends Fragment {
         Cursor cursor =
                 getActivity().getContentResolver().query(Uri.parse("content://today.comeet.android.comeet/elements/"), null, null,
                         null, null);
-        int nombre_item=0;
-        StringBuffer buffer = new StringBuffer();
+
         while (cursor.moveToNext()) {
-            //buffer.append("Id :"+ cursor.getString(0)+"\n");
-            buffer.append("Evenement :"+ cursor.getString(1)+"\n");
-            //buffer.append("Description :"+ cursor.getString(2)+"\n");
-            //buffer.append("Localisation :"+ cursor.getString(3)+"\n\n");
-            buffer.append("Le :"+ cursor.getString(4));
-            //buffer.append("Lattitude :"+ cursor.getDouble(5)+"\n\n");
-            //buffer.append("Longitude :"+ cursor.getDouble(6)+"\n\n");
-            nombre_item++;
+            evenements.add("Evenement: "+cursor.getString(1)+ "\nLe: "+cursor.getString(4));
         }
-        for (int i = 0; i < nombre_item; i++) {
-            evenements.add(buffer.toString());
-        }
+
         recyclerView.setAdapter(new RecyclerSimpleViewAdapter(evenements, android.R.layout.simple_list_item_1));
         recyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getContext(), new RecyclerItemClickListener.OnItemClickListener() {
