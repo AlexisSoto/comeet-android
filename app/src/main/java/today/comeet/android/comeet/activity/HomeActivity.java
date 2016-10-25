@@ -253,26 +253,5 @@ public class HomeActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "Page creation evenement", Toast.LENGTH_LONG).show();
         startActivity(new Intent(getApplicationContext(), CreationEventActivity.class));
     }
-
-    // boutton de test pour lire des données dans la bdd SQLite
-    public void btn_test_read_data  (View view) {
-
-        Cursor cursor =
-            getContentResolver().query(Uri.parse("content://today.comeet.android.comeet/elements"), null, null,
-                    null, null);
-        StringBuffer buffer = new StringBuffer();
-        while (cursor.moveToNext()) {
-            buffer.append("Id :"+ cursor.getString(0)+"\n");
-            buffer.append("Name :"+ cursor.getString(1)+"\n");
-            buffer.append("Description :"+ cursor.getString(2)+"\n");
-            buffer.append("Localisation :"+ cursor.getString(3)+"\n\n");
-            buffer.append("Date :"+ cursor.getString(4)+"\n\n");
-            buffer.append("Lattitude :"+ cursor.getDouble(5)+"\n\n");
-            buffer.append("Longitude :"+ cursor.getDouble(6)+"\n\n");
-        }
-        Log.d("test", "retour :" + buffer);
-    }
-
-
 }
 

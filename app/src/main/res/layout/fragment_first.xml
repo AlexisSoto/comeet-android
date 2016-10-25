@@ -5,28 +5,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="today.comeet.android.comeet.fragment.FirstFragment">
 
-    <FrameLayout
-        android:id="@+id/Events_Fragment"
-        android:layout_width="58dp"
-        android:layout_height="49dp"
-        android:layout_gravity="bottom"
-        android:background="@android:color/transparent"
-        android:layout_marginBottom="218dp"
-        android:layout_alignParentStart="true" >
-
-    </FrameLayout>
-
-    <FrameLayout
-        android:id="@+id/Map_Fragment"
-        android:layout_width="match_parent"
-        android:layout_height="294dp"
-        android:background="@android:color/transparent"
-        android:layout_marginBottom="218dp"
-        android:layout_above="@+id/btn_position"
-        android:layout_alignParentStart="true">
-
-    </FrameLayout>
-
     <android.support.design.widget.FloatingActionButton
         app:fabSize="normal"
         android:id="@+id/btn_plusss"
@@ -34,10 +12,32 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
-        android:layout_gravity="center_vertical|left"
+        android:layout_gravity="center_vertical|right"
         android:onClick="btn_create_event"
         android:layout_margin="@dimen/fab_margin"
         app:layout_anchor="@+id/container"
         app:layout_anchorGravity="center_vertical|right" />
+
+    <FrameLayout
+        android:id="@+id/Events_Fragment"
+        android:layout_width="match_parent"
+        android:layout_height="262dp"
+        android:layout_gravity="bottom"
+        android:background="@android:color/transparent"
+        android:layout_alignParentStart="true" >
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/Map_Fragment"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:background="@android:color/transparent"
+        android:layout_marginBottom="218dp"
+        android:layout_above="@+id/btn_position"
+        android:layout_alignParentStart="true">
+
+    </FrameLayout>
+
 </FrameLayout>
 
