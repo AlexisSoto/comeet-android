@@ -10,15 +10,6 @@
     tools:context="today.comeet.android.comeet.fragment.FbLoginFragment"
     tools:showIn="@layout/activity_main">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/text_details"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:textSize="18sp"
-        />
-
     <com.facebook.login.widget.LoginButton
         android:id="@+id/login_button"
         android:layout_width="wrap_content"
@@ -27,6 +18,4 @@
         android:layout_marginBottom="107dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
-
-
 </RelativeLayout>

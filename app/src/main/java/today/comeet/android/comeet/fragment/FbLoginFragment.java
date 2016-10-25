@@ -1,22 +1,13 @@
 package today.comeet.android.comeet.fragment;
 
 import android.content.Intent;
-import android.content.pm.PackageInstaller;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
@@ -28,34 +19,15 @@ import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedWriter;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.SocketTimeoutException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import today.comeet.android.comeet.R;
 import today.comeet.android.comeet.activity.HomeActivity;
 import today.comeet.android.comeet.helper.ApiHelper;
 
-import static android.R.id.list;
-
 /**
  * A placeholder fragment containing a simple view.
  */
 public class FbLoginFragment extends Fragment {
-
-    private TextView textDetails;
 
     private CallbackManager callbackManager;
     private AccessTokenTracker tokenTracker;
@@ -142,17 +114,8 @@ public class FbLoginFragment extends Fragment {
             @Override
             protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
                 Log.d("CurrentProfile", "" + currentProfile);
-                textDetails.setText(constructWelcomeMessage(currentProfile));
             }
         };
-    }
-
-    private String constructWelcomeMessage(Profile profile) {
-        StringBuffer stringBuffer = new StringBuffer();
-        if (profile != null) {
-            stringBuffer.append("Welcome " + profile.getName());
-        }
-        return stringBuffer.toString();
     }
 
     @Override
@@ -169,8 +132,6 @@ public class FbLoginFragment extends Fragment {
         loginButton.setFragment(this);
         // Other app specific specialization
         loginButton.registerCallback(callbackManager, facebookCallback);
-
-        textDetails = (TextView) view.findViewById(R.id.text_details);
     }
 
     @Override
