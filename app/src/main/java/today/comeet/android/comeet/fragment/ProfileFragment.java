@@ -4,8 +4,17 @@ package today.comeet.android.comeet.fragment;
  * Created by Vincent on 11/10/2016.
  */
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import today.comeet.android.comeet.R;
+import today.comeet.android.comeet.activity.HomeActivity;
 
 
 /**
@@ -44,6 +54,37 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+
+        // Checking connexion
+        if (netInfo== null ) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setMessage("Vous avez besoin d'une connexion internet pour charger cette page. Veuillez activer les données mobiles ou le wifi.")
+                    .setTitle("Impossible de se connecter")
+                    .setCancelable(false)
+                    .setPositiveButton("Paramètres",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    Intent i = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
+                                    startActivity(i);
+                                }
+                            }
+                    )
+                    .setNegativeButton("Retour",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                   // ChoosePubActivity.this.finish();
+                                }
+                            }
+                    );
+            AlertDialog alert = builder.create();
+            alert.show();
+
+            return null;
+
+        }
         profileName = (TextView)rootView.findViewById(R.id.profile_name);
         profilePicture = (ImageView) rootView.findViewById(R.id.profile_picture);
 
