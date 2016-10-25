@@ -22,6 +22,7 @@ import com.facebook.login.widget.LoginButton;
 
 import today.comeet.android.comeet.R;
 import today.comeet.android.comeet.activity.HomeActivity;
+import today.comeet.android.comeet.activity.MainActivity;
 import today.comeet.android.comeet.helper.ApiHelper;
 
 /**
@@ -98,6 +99,11 @@ public class FbLoginFragment extends Fragment {
             @Override
             protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
                 Log.d("FBLogin", "CurrentAccessToken" + currentAccessToken);
+                // Si l'utilisateur se deconnecte
+                if (currentAccessToken== null) {
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    startActivity(intent);
+                }
             }
         };
     }
