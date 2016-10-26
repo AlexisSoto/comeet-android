@@ -12,7 +12,6 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import today.comeet.android.comeet.helper.DBHelper;
-import today.comeet.android.comeet.activity.MainActivity;
 
 /**
  * Created by Mika on 10/11/16.

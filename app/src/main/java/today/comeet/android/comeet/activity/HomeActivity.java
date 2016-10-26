@@ -118,7 +118,7 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(), CreationEventActivity.class));
     }
 
-    
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {

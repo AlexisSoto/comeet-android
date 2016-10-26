@@ -13,7 +13,6 @@ import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
@@ -22,7 +21,7 @@ import com.facebook.login.widget.LoginButton;
 
 import today.comeet.android.comeet.R;
 import today.comeet.android.comeet.activity.HomeActivity;
-import today.comeet.android.comeet.activity.MainActivity;
+import today.comeet.android.comeet.activity.LoginActivity;
 import today.comeet.android.comeet.helper.ApiHelper;
 
 /**
@@ -54,10 +53,10 @@ public class FbLoginFragment extends Fragment {
             }
 
             // Envoie du token au serveur.
-            ApiHelper apihelper= new ApiHelper(getContext());
+            ApiHelper apihelper = new ApiHelper(getContext());
             apihelper.sendFbToken(accessToken.getToken());
 
-            if(profile != null){
+            if (profile != null) {
                 Intent intent = new Intent(getActivity(), HomeActivity.class);
                 startActivity(intent);
             }
@@ -74,8 +73,9 @@ public class FbLoginFragment extends Fragment {
         }
     };
 
-    public FbLoginFragment(){
+    public FbLoginFragment() {
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,33 +85,21 @@ public class FbLoginFragment extends Fragment {
         tokenTracker.startTracking();
         profileTracker.startTracking();
         callbackManager = CallbackManager.Factory.create();
-
-        AccessTokenTracker accessTokenTracker = new AccessTokenTracker() {
-            @Override
-            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken newAccessToken) {
-                updateWithToken(newAccessToken);
-            }
-        };
     }
+
     private void setupTokenTracker() {
         tokenTracker = new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
                 Log.d("FBLogin", "CurrentAccessToken" + currentAccessToken);
-                // Si l'utilisateur se deconnecte
-                if (currentAccessToken== null) {
-                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                // If user is logging out
+                if (currentAccessToken == null) {
+                    Log.d("connexion", "current token" + currentAccessToken);
+                    Intent intent = new Intent(getActivity(), LoginActivity.class);
                     startActivity(intent);
                 }
             }
         };
-    }
-
-    private void updateWithToken(AccessToken currentAccessToken) {
-        // Si token != null alors utilisateur connecté donc on charge HomeActivity
-        if (currentAccessToken != null) {
-            startActivity(new Intent(this.getContext(), HomeActivity.class));
-        }
     }
 
     private void setupProfileTracker() {
@@ -127,9 +115,10 @@ public class FbLoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-            return inflater.inflate(R.layout.fragment_facebook, container, false);
+        return inflater.inflate(R.layout.fragment_facebook, container, false);
     }
-    public void onViewCreated(View view, Bundle savedInstanceState){
+
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         LoginButton loginButton = (LoginButton) view.findViewById(R.id.login_button);
         loginButton.setReadPermissions(userPermission);
@@ -137,6 +126,16 @@ public class FbLoginFragment extends Fragment {
         loginButton.setFragment(this);
         // Other app specific specialization
         loginButton.registerCallback(callbackManager, facebookCallback);
+
+        // Load HomeActivity if user is logged in
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+
+        // Check that we are on LogginActivity
+        if (getActivity().getClass().toString().equals("class today.comeet.android.comeet.activity.LoginActivity"))  {
+            if (accessToken != null) {
+                startActivity(new Intent(this.getContext(), HomeActivity.class));
+            }
+        }
     }
 
     @Override
@@ -144,6 +143,7 @@ public class FbLoginFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();

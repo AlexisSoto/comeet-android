@@ -21,7 +21,7 @@ import today.comeet.android.comeet.fragment.LoginFragment;
 import today.comeet.android.comeet.helper.DBHelper;
 import today.comeet.android.comeet.R;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private FragmentManager mFragmentManager;
     @Override
