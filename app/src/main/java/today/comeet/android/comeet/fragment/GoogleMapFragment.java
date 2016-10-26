@@ -1,21 +1,33 @@
 package today.comeet.android.comeet.fragment;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import today.comeet.android.comeet.R;
+import today.comeet.android.comeet.listener.LocationListener;
 
 /**
  * Created by Annick on 12/10/2016.
@@ -62,6 +74,31 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
         }
         mMap.setMyLocationEnabled(true);
 
+        LocationManager locManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        boolean network_enabled = locManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        Location location = null;
+
+        if (network_enabled && locManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER) != null) {
+            Log.d("test ", "position activée");
+            location = locManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+            if (location != null) {
+                double longitude = location.getLongitude();
+                double latitude = location.getLatitude();
+                Log.d("test ", "longitude " + longitude);
+                Log.d("test ", "lattitude " + latitude);
+
+                // Mooving Camera on position
+                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 16);
+                mMap.animateCamera(cameraUpdate);
+
+            } else
+                Log.d("test ", "location null");
+        } else {
+            Log.d("test", "position non activé");
+            locManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, new LocationListener(getContext(),mMap), null);
+        }
 
     }
 }
