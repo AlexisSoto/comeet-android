@@ -32,6 +32,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import today.comeet.android.comeet.R;
+import today.comeet.android.comeet.activity.AddFriendActivity;
 import today.comeet.android.comeet.activity.HomeActivity;
 
 
@@ -50,6 +51,8 @@ public class ProfileFragment extends Fragment {
         profileFragment.setArguments(args);
         return profileFragment;
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

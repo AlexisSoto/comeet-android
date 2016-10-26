@@ -152,5 +152,11 @@ public class HomeActivity extends AppCompatActivity {
             }, 10);
         }
     }
+
+    // This method is called when we click on the button to add a friend as favorite
+    public void addFavoriteFriend(View view) {
+        Intent intent = new Intent(this, AddFriendActivity.class);
+        startActivity(intent);
+    }
 }
 
