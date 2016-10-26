@@ -1,8 +1,11 @@
 package today.comeet.android.comeet.fragment;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,6 +73,27 @@ public class FbLoginFragment extends Fragment {
         @Override
         public void onError(FacebookException error) {
             Log.d("FBLogin", "onError");
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setMessage("Vous avez besoin d'une connexion internet pour vous connecter à Facebook. Veuillez activer les données mobiles ou le wifi.")
+                    .setTitle("Impossible de se connecter")
+                    .setCancelable(false)
+                    .setPositiveButton("Paramètres",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    Intent i = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
+                                    startActivity(i);
+                                }
+                            }
+                    )
+                    .setNegativeButton("Retour",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    // ChoosePubActivity.this.finish();
+                                }
+                            }
+                    );
+            AlertDialog alert = builder.create();
+            alert.show();
         }
     };
 

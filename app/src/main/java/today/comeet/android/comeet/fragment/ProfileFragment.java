@@ -63,7 +63,7 @@ public class ProfileFragment extends Fragment {
         // Checking connexion
         if (netInfo== null ) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            builder.setMessage("Vous avez besoin d'une connexion internet pour charger cette page. Veuillez activer les données mobiles ou le wifi.")
+            builder.setMessage("Vous avez besoin d'une connexion internet pour charger cette page. Veuillez activer les données mobiles ou le wifi, et recharger la page.")
                     .setTitle("Impossible de se connecter")
                     .setCancelable(false)
                     .setPositiveButton("Paramètres",

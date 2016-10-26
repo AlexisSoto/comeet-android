@@ -83,11 +83,16 @@ public class CreationEventActivity extends AppCompatActivity {
 
         // Ajout dans la base de données
         ContentValues contentValues = new ContentValues();
-        if (eventName != null)
-            contentValues.put(DBHelper.COL_2, eventName.getText().toString());
 
-        if (eventDescription != null)
+        if (!eventName.getText().toString().isEmpty())
+            contentValues.put(DBHelper.COL_2, eventName.getText().toString());
+        else
+            contentValues.put(DBHelper.COL_2,"Non définit");
+
+        if (!eventDescription.getText().toString().isEmpty())
             contentValues.put(DBHelper.COL_3, eventDescription.getText().toString());
+        else
+            contentValues.put(DBHelper.COL_3,"Non définit");
 
         contentValues.put(DBHelper.COL_5, dateEtHeure);
         if (place != null) {
@@ -97,7 +102,6 @@ public class CreationEventActivity extends AppCompatActivity {
         }
         Uri result = getContentResolver().insert(EventContentProvider.CONTENT_URL, contentValues);
         notification();
-
     }
 
     // Boutton pour choisir la localisation de l'événement
