@@ -40,6 +40,15 @@
             android:textStyle="bold"
             android:textSize="25sp"/>
 
+        <FrameLayout
+            android:id="@+id/facebook_logout"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:background="@android:color/transparent"
+            android:layout_marginTop="19dp"
+            android:layout_below="@+id/profile_name"
+            android:layout_centerHorizontal="true"/>
+
     </RelativeLayout>
 
 </LinearLayout>

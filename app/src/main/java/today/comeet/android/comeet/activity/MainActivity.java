@@ -17,6 +17,7 @@ import android.view.WindowManager;
 import com.facebook.stetho.Stetho;
 
 import today.comeet.android.comeet.fragment.FbLoginFragment;
+import today.comeet.android.comeet.fragment.LoginFragment;
 import today.comeet.android.comeet.helper.DBHelper;
 import today.comeet.android.comeet.R;
 
@@ -34,8 +35,10 @@ public class MainActivity extends AppCompatActivity {
 
         mFragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
-        transaction.replace(android.R.id.content, new FbLoginFragment());
+        transaction.replace(android.R.id.content, new LoginFragment());
+        transaction.replace(R.id.facebook_login, new FbLoginFragment());
         transaction.commit();
+
     }
 
     @Override

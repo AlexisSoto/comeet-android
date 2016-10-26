@@ -13,6 +13,8 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -128,6 +130,12 @@ public class ProfileFragment extends Fragment {
         pictureParameters.putString("redirect", "false");
         pictureRequest.setParameters(pictureParameters);
         pictureRequest.executeAsync();
+
+
+        FragmentManager mFragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = mFragmentManager.beginTransaction();
+        transaction.replace(R.id.facebook_logout, new FbLoginFragment());
+        transaction.commit();
 
 
 
