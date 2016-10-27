@@ -13,6 +13,7 @@ import android.widget.ListView;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,6 +21,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import today.comeet.android.comeet.R;
@@ -40,10 +42,16 @@ public class AddFriendActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
+
+        // in order to create custom object (favorite friend) we need the "publish_actions" permission
+        LoginManager.getInstance().logInWithPublishPermissions(
+                this,
+                Arrays.asList("publish_actions"));
 
 
         friendsListView = (ListView) findViewById(R.id.listView_friends);
@@ -65,8 +73,11 @@ public class AddFriendActivity extends AppCompatActivity {
 
                         }
 
-                        ArrayAdapter arrayAdapter = new ArrayAdapter<String>(AddFriendActivity.this, android.R.layout.simple_list_item_1, names);
+                        ArrayAdapter arrayAdapter = new ArrayAdapter<String>(AddFriendActivity.this, android.R.layout.simple_list_item_multiple_choice, names);
+                        friendsListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+
                         friendsListView.setAdapter(arrayAdapter);
+
                     }
                 });
 
