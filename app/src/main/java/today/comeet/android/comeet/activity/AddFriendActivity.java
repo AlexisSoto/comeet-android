@@ -13,6 +13,7 @@ import android.widget.ListView;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
 
 import org.json.JSONArray;
@@ -42,6 +43,23 @@ public class AddFriendActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // we POST a hard coded object (favorite friend)
+                Bundle params = new Bundle();
+                params.putString("object", "{'og:title': 'Truc'}");
+                GraphRequest request = new GraphRequest(
+                    AccessToken.getCurrentAccessToken(),
+                    "me/objects/comeetapplication:favorite_friend",
+                    params,
+                    HttpMethod.POST,
+                    new GraphRequest.Callback() {
+                        @Override
+                        public void onCompleted(GraphResponse response) {
+                            Log.d("Favorite friend", "added" );
+                        }
+
+                    }
+                );
+                request.executeAsync();
 
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
