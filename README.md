@@ -1,10 +1,5 @@
 #Comeet Android
-
-###Bettyna Boursier
-###Vincent Etienne
-###Mickael Mayeur
-###Alexis Soto
-###Sylvain Ventribout
+#####Bettyna Boursier, Vincent Etienne, Mickael Mayeur, Alexis Soto, Sylvain Ventribout
 
 Doodle permet de choisir la meilleure date pour un rendez-vous. Notre application permet de
 trouver le meilleur lieu.
