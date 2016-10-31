@@ -35,11 +35,10 @@ import today.comeet.android.comeet.listener.LocationListener;
 
 public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
     GoogleMap mMap;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_map, container, false);
+        return inflater.inflate(R.layout.fragment_map, container,false);
     }
 
     @Override
@@ -48,23 +47,6 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
 
         SupportMapFragment fragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.googleMap);
         fragment.getMapAsync(this);
-
-    }
-
-    @Override
-    public void onPause() {
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        mMap.setMyLocationEnabled(false);
-        super.onPause();
 
     }
 
@@ -119,5 +101,4 @@ public class GoogleMapFragment extends Fragment implements OnMapReadyCallback {
         }
 
     }
-
 }

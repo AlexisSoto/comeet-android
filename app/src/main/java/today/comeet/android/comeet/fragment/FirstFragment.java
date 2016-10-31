@@ -21,7 +21,6 @@ import today.comeet.android.comeet.activity.CreationEventActivity;
 
 public class FirstFragment extends Fragment {
     FloatingActionButton buttonEventCreate;
-    private FragmentManager mFragmentManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,12 +44,9 @@ public class FirstFragment extends Fragment {
 
     public void onStart() {
         super.onStart();
-        mFragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction transaction = mFragmentManager.beginTransaction();
-        if (R.id.Events_Fragment != 0)
-        transaction.replace(R.id.Events_Fragment, new EventRecyclerViewFragment());
-        transaction.replace(R.id.Map_Fragment, new GoogleMapFragment());
-        transaction.commit();
+        FragmentManager fm = getFragmentManager();
+        fm.beginTransaction().replace(R.id.Events_Fragment, new EventRecyclerViewFragment()).commit();
+        fm.beginTransaction().replace(R.id.Map_Fragment, new GoogleMapFragment()).commit();
 
         /*buttonEventCreate = (FloatingActionButton) getView().findViewById(R.id.Button_CreateEvent);
         buttonEventCreate.setOnClickListener(

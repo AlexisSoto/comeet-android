@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -120,7 +118,7 @@ public class FbLoginFragment extends Fragment {
                 Log.d("FBLogin", "CurrentAccessToken" + currentAccessToken);
                 // If user is logging out
                 if (currentAccessToken == null) {
-                    Log.d("connexion", "current activity" + getActivity());
+                    Log.d("connexion", "current token" + currentAccessToken);
                     Intent intent = new Intent(getActivity(), LoginActivity.class);
                     startActivity(intent);
                 }
