@@ -114,7 +114,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void btn_create_event  (View view) {
-        Toast.makeText(getApplicationContext(), "Page creation evenement", Toast.LENGTH_LONG).show();
+       // Toast.makeText(getApplicationContext(), "Page creation evenement", Toast.LENGTH_LONG).show();
         startActivity(new Intent(getApplicationContext(), CreationEventActivity.class));
     }
 
