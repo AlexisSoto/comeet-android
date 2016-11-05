@@ -142,7 +142,7 @@ public class CreationEventActivity extends AppCompatActivity {
         }
     }
 
-    // Fonction pour faire une notification
+    // Fonction qui permet d'effectuer une notification (qui vibre)
     private void notification() {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
