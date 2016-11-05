@@ -11,15 +11,22 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import today.comeet.android.comeet.helper.DBHelper;
 import today.comeet.android.comeet.R;
@@ -35,7 +42,7 @@ public class CreationEventActivity extends AppCompatActivity {
     private String date;
     private String heure;
     private Place place;
-
+    private Button friends;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +50,7 @@ public class CreationEventActivity extends AppCompatActivity {
         setContentView(R.layout.activity_creation_event);
         eventName = (EditText) findViewById(R.id.event_name);
         eventDescription = (EditText) findViewById(R.id.event_description);
+        friends = (Button) findViewById(R.id.add_friends);
     }
 
     // Boutton pour choisir la date
@@ -154,5 +162,28 @@ public class CreationEventActivity extends AppCompatActivity {
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         mNotificationManager.notify(1, builder.build());
 
+    }
+
+    public void btn_friends (View v) {
+        Log.d("friend", "boutton click");
+        // we will query the name with the openGraph API
+        GraphRequest request = GraphRequest.newMeRequest(
+                AccessToken.getCurrentAccessToken(),
+                new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object, GraphResponse response) {
+                        // this code is executed when the response from the API is received (async)
+                        try {
+                            Log.d("friend", "name: "+  object.getString("friends"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+        // we pass the right parameters for the query : fields=name
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "friends");
+        request.setParameters(parameters);
+        request.executeAsync(); // execute the query
     }
 }

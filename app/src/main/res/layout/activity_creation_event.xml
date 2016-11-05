@@ -66,5 +66,16 @@
         android:onClick="autocompletePlace"
         android:text="Choisissez la localisation" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="avec qui"
+        android:onClick="btn_friends"
+        android:id="@+id/add_friends"
+        android:layout_above="@+id/setlocalisation"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="23dp"
+        android:layout_alignParentEnd="true" />
+
 
 </RelativeLayout>
