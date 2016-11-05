@@ -16,6 +16,8 @@ import android.provider.Settings;
 import android.support.annotation.IdRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -32,75 +34,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 import today.comeet.android.comeet.R;
+import today.comeet.android.comeet.fragment.FbLoginFragment;
 import today.comeet.android.comeet.fragment.FirstFragment;
+import today.comeet.android.comeet.fragment.LoginFragment;
 import today.comeet.android.comeet.fragment.SecondFragment;
 import today.comeet.android.comeet.fragment.ProfileFragment;
 import com.roughike.bottombar.OnMenuTabClickListener;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private BottomBar mBottomBar;
-    private FragNavController fragNavController;
+    private FragmentManager mFragmentManager;
     private boolean permissionsEnabled;
-
-    //indices to fragments
-    private final int TAB_FIRST = FragNavController.TAB1;
-    private final int TAB_SECOND = FragNavController.TAB2;
-    private final int TAB_THIRD = FragNavController.TAB3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Loading home content layout
-        setContentView(R.layout.activity_home);
+        // Check permissions
         ActivatePermissions();
 
-        // Récupère divers éléments du xml (à partir de leur id)
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
-        //FragNav
-        //list of fragments
-        List<Fragment> fragments = new ArrayList<>(3);
-
-        //add fragments to list
-        fragments.add(FirstFragment.newInstance(0));
-        fragments.add(SecondFragment.newInstance(0));
-        fragments.add(ProfileFragment.newInstance(0));
-
-        //link fragments to container
-        fragNavController = new FragNavController(getSupportFragmentManager(),R.id.container,fragments);
-        //End of FragNav
-
-        //BottomBar menu
-        mBottomBar = BottomBar.attach(this, savedInstanceState);
-        mBottomBar.setItems(R.menu.bottombar_menu);
-        mBottomBar.setOnMenuTabClickListener(new OnMenuTabClickListener() {
-            @Override
-            public void onMenuTabSelected(@IdRes int menuItemId) {
-                //switch between tabs
-                switch (menuItemId) {
-                    case R.id.bottomBarItemOne:
-                        fragNavController.switchTab(TAB_FIRST);
-                        break;
-                    case R.id.bottomBarItemSecond:
-                        fragNavController.switchTab(TAB_SECOND);
-                        break;
-                    case R.id.bottomBarItemThird:
-                        fragNavController.switchTab(TAB_THIRD);
-                        break;
-                }
-            }
-
-            @Override
-            public void onMenuTabReSelected(@IdRes int menuItemId) {
-                if (menuItemId == R.id.bottomBarItemOne) {
-                    fragNavController.clearStack();
-                }
-            }
-        });
-        //End of BottomBar menu
-
+        // Loading first fragment
+        mFragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = mFragmentManager.beginTransaction();
+        transaction.replace(android.R.id.content, new FirstFragment());
+        transaction.commit();
     }
     @Override
     public void onBackPressed() {
@@ -108,9 +65,6 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        // Necessary to restore the BottomBar's state, otherwise we would
-        // lose the current tab on orientation change.
-        mBottomBar.onSaveInstanceState(outState);
     }
 
     public void btn_create_event  (View view) {
