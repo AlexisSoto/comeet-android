@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -24,6 +26,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.w3c.dom.Text;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 import today.comeet.android.comeet.R;
 import today.comeet.android.comeet.listener.LocationListener;
@@ -90,11 +96,29 @@ public class EventDetailActivity extends AppCompatActivity {
     public void btnItineraireOnclick(View v) {
         Intent intent = new Intent(getApplicationContext(), ItineraireActivity.class);
         // send origin and destination adress
-        intent.putExtra("origine", eventLocalisation.toString());
+        intent.putExtra("destination", eventLocalisation.toString());
         if (latLng != null) {
-            Log.d("bla", "lattitude: " + latLng.latitude);
-            Log.d("bla", "longitude: " + latLng.longitude);
-            startActivity(intent);
+            Log.i("position", "latitude: " + latLng.latitude);
+            Log.i("position", "longitude: " + latLng.longitude);
+
+            // We need to get adress from latitude and longitude
+            Geocoder geocoder;
+            List<Address> addresses;
+            geocoder = new Geocoder(this, Locale.getDefault());
+            try {
+                addresses= geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+                String address = addresses.get(0).getAddressLine(0);
+                String city = addresses.get(0).getLocality();
+                address += " "+city;
+                Log.i("position", "adresse origine: " +address);
+                intent.putExtra("origine", address);
+
+                startActivity(intent);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         } else {
             // Localisation null , tell to the user the error
             AlertDialog.Builder builder = new AlertDialog.Builder(this);

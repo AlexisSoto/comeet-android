@@ -45,8 +45,8 @@ public class ItineraireActivity extends FragmentActivity implements OnMapReadyCa
     private List<Marker> destinationMarkers = new ArrayList<>();
     private List<Polyline> polylinePaths = new ArrayList<>();
     private ProgressDialog progressDialog;
-    private boolean permissionsEnabled;
-
+    private String origine;
+    private String destination;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,15 +54,19 @@ public class ItineraireActivity extends FragmentActivity implements OnMapReadyCa
         setContentView(R.layout.activity_itineraire);
         Bundle extras = getIntent().getExtras();
         if (null != extras) {
-            // Get origine and destination adresse
-            Log.d("lieu", extras.getString("origine"));
+            // Get origine and destination adress
+            origine = extras.getString("origine");
+            destination = extras.getString("destination");
         }
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        btnFindPath = (Button) findViewById(R.id.btnFindPath);
+        // Send itineraire request
+        sendRequest();
+
+        /*btnFindPath = (Button) findViewById(R.id.btnFindPath);
         etOrigin = (EditText) findViewById(R.id.etOrigin);
         etDestination = (EditText) findViewById(R.id.etDestination);
 
@@ -71,23 +75,14 @@ public class ItineraireActivity extends FragmentActivity implements OnMapReadyCa
             public void onClick(View v) {
                 sendRequest();
             }
-        });
+        });*/
     }
 
     private void sendRequest() {
-        String origin = etOrigin.getText().toString();
-        String destination = etDestination.getText().toString();
-        if (origin.isEmpty()) {
-            Toast.makeText(this, "Please enter origin address!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (destination.isEmpty()) {
-            Toast.makeText(this, "Please enter destination address!", Toast.LENGTH_SHORT).show();
-            return;
-        }
+
 
         try {
-            new DirectionFinder((DirectionFinderListener) this, origin, destination).execute();
+            new DirectionFinder((DirectionFinderListener) this, origine, destination).execute();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
