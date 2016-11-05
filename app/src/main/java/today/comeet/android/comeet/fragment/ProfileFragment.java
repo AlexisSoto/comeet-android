@@ -135,10 +135,11 @@ public class ProfileFragment extends Fragment {
         pictureRequest.executeAsync();
 
 
+        /* Logout Facebook fragment
         FragmentManager mFragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
         transaction.replace(R.id.facebook_logout, new FbLoginFragment());
-        transaction.commit();
+        transaction.commit();*/
 
 
 
