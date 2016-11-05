@@ -1,5 +1,6 @@
 package today.comeet.android.comeet.activity;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -62,10 +63,9 @@ public class EventDetailActivity extends AppCompatActivity {
             txtEventLocalisation.append(eventLocalisation);
         else
             txtEventLocalisation.append("Non définit");
-
     }
 
     public void btnItineraireOnclick(View v) {
-            Log.d("test","onclick");
+        startActivity(new Intent(getApplicationContext(), ItineraireActivity.class));
     }
 }
