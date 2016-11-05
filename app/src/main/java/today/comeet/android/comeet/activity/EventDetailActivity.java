@@ -1,6 +1,7 @@
 package today.comeet.android.comeet.activity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -94,6 +95,21 @@ public class EventDetailActivity extends AppCompatActivity {
             Log.d("bla", "lattitude: " + latLng.latitude);
             Log.d("bla", "longitude: " + latLng.longitude);
             startActivity(intent);
+        } else {
+            // Localisation null , tell to the user the error
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Unexpected problem with your geolocalisation. Refresh the page")
+                    .setTitle("Unexpeted error")
+                    .setCancelable(false)
+                    .setNegativeButton("Cancel",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    EventDetailActivity.this.finish();
+                                }
+                            }
+                    );
+            AlertDialog alert = builder.create();
+            alert.show();
         }
     }
 
