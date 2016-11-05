@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="today.comeet.android.comeet.activity.EventDetail">
+    tools:context="today.comeet.android.comeet.activity.EventDetailActivity">
 
     <TextView
         android:layout_width="wrap_content"
@@ -36,17 +36,6 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Localisation: "
-        android:id="@+id/eventlocalisation"
-        android:textSize="15dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="49dp"
-        android:layout_alignParentEnd="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="Date et Heure: "
         android:id="@+id/eventDate"
         android:textSize="15dp"
@@ -64,6 +53,27 @@
         android:layout_marginTop="41dp"
         android:layout_below="@+id/eventDate"
         android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Itinéraire"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/btn_itineraire"
+        android:onClick="btnItineraireOnclick"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Localisation: "
+        android:id="@+id/eventlocalisation"
+        android:textSize="15dp"
+        android:layout_below="@+id/descriptionEvent"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="37dp"
         android:layout_alignParentEnd="true" />
 
 

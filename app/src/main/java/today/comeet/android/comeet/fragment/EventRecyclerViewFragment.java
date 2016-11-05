@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import today.comeet.android.comeet.R;
-import today.comeet.android.comeet.activity.EventDetail;
+import today.comeet.android.comeet.activity.EventDetailActivity;
 import today.comeet.android.comeet.listener.RecyclerItemClickListener;
 import today.comeet.android.comeet.adapter.RecyclerSimpleViewAdapter;
 
@@ -59,7 +59,7 @@ public class EventRecyclerViewFragment extends Fragment {
                         Log.d("test", "position :" + position);
 
                         // Affiche l'événement correspondant à l'id de la recyclerview
-                        Intent intent = new Intent(getActivity(), EventDetail.class);
+                        Intent intent = new Intent(getActivity(), EventDetailActivity.class);
                         intent.putExtra("id", position );
                         startActivity(intent);
                     }

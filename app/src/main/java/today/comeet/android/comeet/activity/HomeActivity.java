@@ -1,45 +1,20 @@
 package today.comeet.android.comeet.activity;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.support.annotation.IdRes;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
-import com.github.clans.fab.FloatingActionButton;
-import com.ncapdevi.fragnav.FragNavController;
-import com.roughike.bottombar.BottomBar;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import today.comeet.android.comeet.R;
-import today.comeet.android.comeet.fragment.FbLoginFragment;
 import today.comeet.android.comeet.fragment.FirstFragment;
-import today.comeet.android.comeet.fragment.LoginFragment;
-import today.comeet.android.comeet.fragment.SecondFragment;
-import today.comeet.android.comeet.fragment.ProfileFragment;
-import com.roughike.bottombar.OnMenuTabClickListener;
 
 public class HomeActivity extends AppCompatActivity {
 
