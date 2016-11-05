@@ -28,13 +28,13 @@ import today.comeet.android.comeet.provider.EventContentProvider;
 
 public class CreationEventActivity extends AppCompatActivity {
 
-    DatePickerDialog dpd = null;
-    TimePickerDialog timepicker;
-    EditText eventName;
-    EditText eventDescription;
-    String date;
-    String heure;
-    Place place;
+    private DatePickerDialog dpd = null;
+    private TimePickerDialog timepicker;
+    private EditText eventName;
+    private EditText eventDescription;
+    private String date;
+    private String heure;
+    private Place place;
 
 
     @Override
