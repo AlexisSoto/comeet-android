@@ -80,7 +80,7 @@ public class CreationEventActivity extends AppCompatActivity {
 
     // Boutton pour créer un nouvel événement
     public void btn_new_event(View v) {
-        String dateEtHeure = "";
+        /*String dateEtHeure = "";
         if (date != null)
             dateEtHeure += date;
         if (heure != null)
@@ -109,7 +109,11 @@ public class CreationEventActivity extends AppCompatActivity {
             contentValues.put(DBHelper.COL_7, place.getLatLng().longitude);
         }
         Uri result = getContentResolver().insert(EventContentProvider.CONTENT_URL, contentValues);
-        notification();
+        notification();*/
+
+        // Loading ChoosePubActivity
+        Intent intent = new Intent(getApplicationContext(), ChoosePubActivity.class);
+        startActivity(intent);
     }
 
     // Boutton pour choisir la localisation de l'événement
