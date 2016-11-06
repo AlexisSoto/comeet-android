@@ -41,7 +41,7 @@ public class ChooseBarActivity extends AppCompatActivity {
         GoogleApiHelper googleapihelper = new GoogleApiHelper(this);
         // Get user geolocalisation
         LatLng latlng = new LatLng( 48.737378, 2.423581);
-        googleapihelper.retrieveNearbyPlaceData( latlng , 5000, "food");
+        googleapihelper.retrieveNearbyPlaceData( latlng , 500, "bar");
     }
 
     @Override

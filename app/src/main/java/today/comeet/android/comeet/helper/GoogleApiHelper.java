@@ -12,6 +12,8 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,13 +37,28 @@ public class GoogleApiHelper {
         Log.i("test","url :"+url+"location="+location.latitude+","+location.longitude+"&radius="+radius+"&types="+types+"&key=AIzaSyD7PnqYzH87nWyRlfdYR94O8nFLsq3Y-ik");
         StringRequest stringRequest = new StringRequest(Request.Method.GET, this.url+="location="+location.latitude+","+location.longitude+"&radius="+radius+"&types="+types+"&key=AIzaSyD7PnqYzH87nWyRlfdYR94O8nFLsq3Y-ik",
                 new Response.Listener<String>() {
-
                     @Override
                     public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-                        Log.i("test", "reponse: " + response.toString());
+                        try {
+                            JSONObject result = new JSONObject(response);
+                            Log.d("test", "result json status: "+ result.getString("status"));
+                            Log.d("test", "result json html_attributions: "+ result.getString("html_attributions"));
 
-                        //mTextView.setText("Response is: "+ response.substring(0,500));
+                            // Recupère les réponses
+                            JSONArray listebar= result.getJSONArray("results");
+                            Log.d("test", "taille du tableau json array: "+listebar.length());
+
+                            for (int i=0; i < listebar.length(); i++) {
+                                Log.d ("test", "bar "+i+" name : "+listebar.getJSONObject(i).getString("name"));
+                                Log.d ("test", "bar "+i+" vicinity : "+listebar.getJSONObject(i).getString("vicinity"));
+                            }
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
                     }
                 }, new Response.ErrorListener() {
             @Override
