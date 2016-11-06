@@ -25,7 +25,7 @@ import com.facebook.login.widget.LoginButton;
 import today.comeet.android.comeet.R;
 import today.comeet.android.comeet.activity.HomeActivity;
 import today.comeet.android.comeet.activity.LoginActivity;
-import today.comeet.android.comeet.helper.ApiHelper;
+import today.comeet.android.comeet.helper.ServeurApiHelper;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -56,7 +56,7 @@ public class FbLoginFragment extends Fragment {
             }
 
             // Envoie du token au serveur.
-            ApiHelper apihelper = new ApiHelper(getContext());
+            ServeurApiHelper apihelper = new ServeurApiHelper(getContext());
             apihelper.sendFbToken(accessToken.getToken());
 
             if (profile != null) {
@@ -88,7 +88,7 @@ public class FbLoginFragment extends Fragment {
                     .setNegativeButton("Retour",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    // ChoosePubActivity.this.finish();
+                                    // ChooseBarActivity.this.finish();
                                 }
                             }
                     );

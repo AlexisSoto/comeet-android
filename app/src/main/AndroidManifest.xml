@@ -55,7 +55,7 @@
             android:label="@string/title_activity_add_friend"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activity.ItineraireActivity" />
-        <activity android:name=".activity.ChoosePubActivity"></activity>
+        <activity android:name=".activity.ChooseBarActivity"></activity>
     </application>
 
 </manifest>

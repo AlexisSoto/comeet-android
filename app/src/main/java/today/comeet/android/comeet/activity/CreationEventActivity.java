@@ -111,8 +111,8 @@ public class CreationEventActivity extends AppCompatActivity {
         Uri result = getContentResolver().insert(EventContentProvider.CONTENT_URL, contentValues);
         notification();*/
 
-        // Loading ChoosePubActivity
-        Intent intent = new Intent(getApplicationContext(), ChoosePubActivity.class);
+        // Loading ChooseBarActivity
+        Intent intent = new Intent(getApplicationContext(), ChooseBarActivity.class);
         startActivity(intent);
     }
 

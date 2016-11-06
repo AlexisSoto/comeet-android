@@ -80,7 +80,7 @@ public class ProfileFragment extends Fragment {
                     .setNegativeButton("Retour",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                   // ChoosePubActivity.this.finish();
+                                   // ChooseBarActivity.this.finish();
                                 }
                             }
                     );
