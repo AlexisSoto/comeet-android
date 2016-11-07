@@ -78,9 +78,9 @@ public class CreationEventActivity extends AppCompatActivity {
 
     }
 
-    // Boutton pour créer un nouvel événement
-    public void btn_new_event(View v) {
-        /*String dateEtHeure = "";
+    public void btn_launch_choose_bar(View v) {
+
+        String dateEtHeure = "";
         if (date != null)
             dateEtHeure += date;
         if (heure != null)
@@ -89,86 +89,26 @@ public class CreationEventActivity extends AppCompatActivity {
         if (heure == null && date == null)
             dateEtHeure = "Non définit";
 
-        // Ajout dans la base de données
-        ContentValues contentValues = new ContentValues();
+        // Launch ChooseBarActivity
+        Intent intent = new Intent(getApplicationContext(), ChooseBarActivity.class);
 
+        // Send Data to create new event
         if (!eventName.getText().toString().isEmpty())
-            contentValues.put(DBHelper.COL_2, eventName.getText().toString());
+            intent.putExtra("nameEvent", eventName.getText().toString());
         else
-            contentValues.put(DBHelper.COL_2,"Non définit");
+            intent.putExtra("nameEvent", "Non définit");
 
         if (!eventDescription.getText().toString().isEmpty())
-            contentValues.put(DBHelper.COL_3, eventDescription.getText().toString());
+            intent.putExtra("descriptionEvent", eventDescription.getText().toString());
         else
-            contentValues.put(DBHelper.COL_3,"Non définit");
+            intent.putExtra("descriptionEvent", "Non définit");
 
-        contentValues.put(DBHelper.COL_5, dateEtHeure);
-        if (place != null) {
-            contentValues.put(DBHelper.COL_4, place.getAddress().toString());
-            contentValues.put(DBHelper.COL_6, place.getLatLng().latitude);
-            contentValues.put(DBHelper.COL_7, place.getLatLng().longitude);
-        }
-        Uri result = getContentResolver().insert(EventContentProvider.CONTENT_URL, contentValues);
-        notification();*/
+        intent.putExtra("DateetHeureEvent", dateEtHeure);
 
-        // Loading ChooseBarActivity
-        Intent intent = new Intent(getApplicationContext(), ChooseBarActivity.class);
         startActivity(intent);
     }
 
-    // Boutton pour choisir la localisation de l'événement
-    public void autocompletePlace(View view) {
-        try {
-            // Ouvre une nouvelle fenêtre pour ajouter la localisation souhaité
-            Intent intent =
-                    new PlaceAutocomplete
-                            .IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
-                            .build(this);
-            // Indique qu'on attends un résultat (dans notre cas, une adresse)
-            startActivityForResult(intent, 1);
-        } catch (GooglePlayServicesRepairableException e) {
-            // TODO: Handle the error.
-        } catch (GooglePlayServicesNotAvailableException e) {
-            // TODO: Handle the error.
-        }
-    }
-
-    @Override
-    // Fonction qui s'exécute quand on a choisit une adresse
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // Si tout s'est bien déroulé
-        if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-                // Récupère les données de la place choisit
-                place = PlaceAutocomplete.getPlace(this, data);
-            }
-            // Dans le cas où il y a une erreur
-            else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
-                Status status = PlaceAutocomplete.getStatus(this, data);
-                // TODO: Handle the error.
-                Log.e("Tag", status.getStatusMessage());
-            }
-            // Si l'utilisateur retourne en arrière
-            else if (resultCode == RESULT_CANCELED) {
-            }
-        }
-    }
-
-    // Fonction qui permet d'effectuer une notification (qui vibre)
-    private void notification() {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Comeet")
-                .setContentText("Création événement");
-
-        builder.setVibrate(new long[]{1000, 1000, 1000, 1000, 1000});
-
-        NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        mNotificationManager.notify(1, builder.build());
-
-    }
-
-    public void btn_friends (View v) {
+    public void btn_friends(View v) {
         Log.d("friend", "boutton click");
         // we will query the name with the openGraph API
         GraphRequest request = GraphRequest.newMeRequest(
@@ -178,7 +118,7 @@ public class CreationEventActivity extends AppCompatActivity {
                     public void onCompleted(JSONObject object, GraphResponse response) {
                         // this code is executed when the response from the API is received (async)
                         try {
-                            Log.d("friend", "name: "+  object.getString("friends"));
+                            Log.d("friend", "name: " + object.getString("friends"));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
