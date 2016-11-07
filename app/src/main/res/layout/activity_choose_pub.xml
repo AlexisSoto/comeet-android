@@ -16,4 +16,22 @@
         android:text=""
         android:id="@+id/getbar"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_next_bar"
+        android:onClick="btn_next_bar"
+        android:text="next bar"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_save_bar_and_event"
+        android:text="I like it"
+        android:onClick="btn_save_bar_and_event"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
+
 </RelativeLayout>

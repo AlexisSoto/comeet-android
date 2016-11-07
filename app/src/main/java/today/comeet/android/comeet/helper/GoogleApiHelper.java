@@ -32,33 +32,14 @@ public class GoogleApiHelper {
         queue = Volley.newRequestQueue(context);
     }
 
-    public void retrieveNearbyPlaceData (LatLng location, int radius, String types) {
+    public void retrieveNearbyPlaceData(LatLng location, int radius, String types, final VolleyCallback callback) {
         // Request a string response from the provided URL.
-        Log.i("test","url :"+url+"location="+location.latitude+","+location.longitude+"&radius="+radius+"&types="+types+"&key=AIzaSyD7PnqYzH87nWyRlfdYR94O8nFLsq3Y-ik");
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, this.url+="location="+location.latitude+","+location.longitude+"&radius="+radius+"&types="+types+"&key=AIzaSyD7PnqYzH87nWyRlfdYR94O8nFLsq3Y-ik",
+        Log.i("test", "url :" + url + "location=" + location.latitude + "," + location.longitude + "&radius=" + radius + "&types=" + types + "&key=AIzaSyD7PnqYzH87nWyRlfdYR94O8nFLsq3Y-ik");
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, this.url += "location=" + location.latitude + "," + location.longitude + "&radius=" + radius + "&types=" + types + "&key=AIzaSyD7PnqYzH87nWyRlfdYR94O8nFLsq3Y-ik",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        try {
-                            JSONObject result = new JSONObject(response);
-                            Log.d("test", "result json status: "+ result.getString("status"));
-                            Log.d("test", "result json html_attributions: "+ result.getString("html_attributions"));
-
-                            // Recupère les réponses
-                            JSONArray listebar= result.getJSONArray("results");
-                            Log.d("test", "taille du tableau json array: "+listebar.length());
-
-                            for (int i=0; i < listebar.length(); i++) {
-                                Log.d ("test", "bar "+i+" name : "+listebar.getJSONObject(i).getString("name"));
-                                Log.d ("test", "bar "+i+" vicinity : "+listebar.getJSONObject(i).getString("vicinity"));
-                            }
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-
+                        callback.onSuccess(response.toString());
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -67,6 +48,11 @@ public class GoogleApiHelper {
         });
 // Add the request to the RequestQueue.
         queue.add(stringRequest);
+    }
+
+    // Interface de "callback" qui permet de notifier qu'on a finit de récupérer les informations du serveur
+    public interface VolleyCallback {
+        void onSuccess(String result);
     }
 
 }
