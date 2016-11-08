@@ -10,10 +10,17 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="today.comeet.android.comeet.activity.ChooseBarActivity">
 
+    <ImageView
+        android:id="@+id/img_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="250dp"
+        android:layout_alignParentTop="true" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
+        android:layout_below="@id/img_bar"
         android:id="@+id/getbar"/>
 
     <Button

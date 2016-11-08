@@ -2,42 +2,25 @@ package today.comeet.android.comeet.activity;
 
 import android.app.NotificationManager;
 import android.content.ContentValues;
-import android.location.Geocoder;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.location.places.AutocompleteFilter;
-import com.google.android.gms.location.places.AutocompletePrediction;
-import com.google.android.gms.location.places.AutocompletePredictionBuffer;
-import com.google.android.gms.location.places.GeoDataApi;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.PlaceBuffer;
-import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
-
 import today.comeet.android.comeet.R;
 import today.comeet.android.comeet.helper.DBHelper;
 import today.comeet.android.comeet.helper.GoogleApiHelper;
+import today.comeet.android.comeet.modules.ImageLoadTask;
 import today.comeet.android.comeet.provider.EventContentProvider;
 
 public class ChooseBarActivity extends AppCompatActivity {
@@ -48,6 +31,7 @@ public class ChooseBarActivity extends AppCompatActivity {
     private String dateEtHeure;
     private String eventName;
     private String eventDescription;
+    private ImageView img_bar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +48,8 @@ public class ChooseBarActivity extends AppCompatActivity {
         }
 
         txtgetbar = (TextView) findViewById(R.id.getbar);
+        img_bar = (ImageView) findViewById(R.id.img_bar);
         indextoShow = 0;
-
     }
 
     @Override
@@ -91,10 +75,7 @@ public class ChooseBarActivity extends AppCompatActivity {
                         Log.d("test", "bar " + i + " geoloc : " + listebar.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getString("lat"));
                         Log.i("bar", "bar " + i + " name : " + listebar.getJSONObject(i).getString("name"));
                         Log.i("bar", "bar " + i + " adress : " + listebar.getJSONObject(i).getString("vicinity"));
-                        // Check if any photo is existing
-                        if (!listebar.getJSONObject(i).isNull("photos")) {
-                            Log.i("bar", "bar " + i + " photo ref : " + listebar.getJSONObject(i).getJSONArray("photos").getJSONObject(0).getString("photo_reference"));
-                        }
+
                     }
 
                     /* Load  retrieve data to Textview, imageview etc */
@@ -121,6 +102,21 @@ public class ChooseBarActivity extends AppCompatActivity {
     private void LoadContentbyIndex(int index) {
         try {
             txtgetbar.setText("Nom: " + listebar.getJSONObject(index).getString("name") + "\nLocalisation: " + listebar.getJSONObject(index).getString("vicinity"));
+
+            // Check if any photo is existing
+            if (!listebar.getJSONObject(index).isNull("photos")) {
+                // Get photo reference from google api
+                Log.d("photo", "photo ref: "+listebar.getJSONObject(index).getJSONArray("photos").getJSONObject(0).getString("photo_reference"));
+                String URLimg = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="+ listebar.getJSONObject(index).getJSONArray("photos").getJSONObject(0).getString("photo_reference")+"&key=AIzaSyD7PnqYzH87nWyRlfdYR94O8nFLsq3Y-ik";                Log.d("photo", "URL MAIN JAVA: "+"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&"+  listebar.getJSONObject(index).getJSONArray("photos").getJSONObject(0).getString("photo_reference")+ "&key=AIzaSyD7PnqYzH87nWyRlfdYR94O8nFLsq3Y-ik");
+                Log.d("photo", "URL MAIN JAVA: "+URLimg);
+
+                // Load picture from URL
+                new ImageLoadTask(URLimg, img_bar).execute();
+            } else {
+                // No picture so transparent
+                img_bar.setImageResource(android.R.color.transparent);
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
