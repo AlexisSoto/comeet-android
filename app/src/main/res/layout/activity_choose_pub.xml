@@ -29,6 +29,8 @@
         android:id="@+id/btn_next_bar"
         android:onClick="btn_next_bar"
         android:text="next bar"
+        android:background="@drawable/round_button"
+        android:textColor="#FFFFFF"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true" />
 
@@ -37,6 +39,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/btn_save_bar_and_event"
         android:text="I like it"
+        android:background="@drawable/round_button"
+        android:textColor="#FFFFFF"
         android:onClick="btn_save_bar_and_event"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true" />
