@@ -19,6 +19,7 @@ import android.widget.TimePicker;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.Profile;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
@@ -110,24 +111,31 @@ public class CreationEventActivity extends AppCompatActivity {
 
     public void btn_friends(View v) {
         Log.d("friend", "boutton click");
-        // we will query the name with the openGraph API
-        GraphRequest request = GraphRequest.newMeRequest(
-                AccessToken.getCurrentAccessToken(),
-                new GraphRequest.GraphJSONObjectCallback() {
-                    @Override
-                    public void onCompleted(JSONObject object, GraphResponse response) {
-                        // this code is executed when the response from the API is received (async)
-                        try {
-                            Log.d("friend", "name: " + object.getString("friends"));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+        Profile profile = Profile.getCurrentProfile();
+        if (profile != null) {
+            Log.d("friend", "profile != null");
+            // we will query the name with the openGraph API
+            GraphRequest request = GraphRequest.newMeRequest(
+                    AccessToken.getCurrentAccessToken(),
+                    new GraphRequest.GraphJSONObjectCallback() {
+                        @Override
+                        public void onCompleted(JSONObject object, GraphResponse response) {
+                            // this code is executed when the response from the API is received (async)
+                            try {
+                                Log.d("friend", "name: " + object.getString("friends"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
-                    }
-                });
-        // we pass the right parameters for the query : fields=name
-        Bundle parameters = new Bundle();
-        parameters.putString("fields", "friends");
-        request.setParameters(parameters);
-        request.executeAsync(); // execute the query
+                    });
+            // we pass the right parameters for the query : fields=name
+            Bundle parameters = new Bundle();
+            parameters.putString("fields", "friends");
+            request.setParameters(parameters);
+            request.executeAsync(); // execute the query
+        } else {
+            Log.d("friend", "profile == null");
+
+        }
     }
 }
