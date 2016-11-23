@@ -3,7 +3,9 @@ package today.comeet.android.comeet.activity;
 import android.app.DatePickerDialog;
 import android.app.NotificationManager;
 import android.app.TimePickerDialog;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +23,7 @@ import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 
 import today.comeet.android.comeet.helper.DBHelper;
 import today.comeet.android.comeet.R;
+import today.comeet.android.comeet.provider.EventContentProvider;
 
 
 public class CreationEventActivity extends AppCompatActivity {
@@ -32,7 +35,6 @@ public class CreationEventActivity extends AppCompatActivity {
     String date;
     String heure;
     Place place;
-    DBHelper database;
 
 
     @Override
@@ -41,8 +43,6 @@ public class CreationEventActivity extends AppCompatActivity {
         setContentView(R.layout.activity_creation_event);
         eventName = (EditText) findViewById(R.id.event_name);
         eventDescription = (EditText) findViewById(R.id.event_description);
-        // Initialisation de la database
-        database= new DBHelper(this);
     }
 
     // Boutton pour choisir la date
@@ -72,27 +72,36 @@ public class CreationEventActivity extends AppCompatActivity {
 
     // Boutton pour créer un nouvel événement
     public void btn_new_event(View v) {
-        // Il faut récupérer les différents éléments (date,heures etc)
-        Log.d("Creation", "event_name recup: " + eventName.getText().toString());
-        Log.d("Creation", "event_description recup: " + eventDescription.getText().toString());
-        Log.d("Creation", "date recup: " + date);
-        Log.d("Creation", "heure recup: " + heure);
-        // Il faut s'assurer que place != null --> sinon erreur
+        String dateEtHeure = "";
+        if (date != null)
+            dateEtHeure += date;
+        if (heure != null)
+            dateEtHeure += " " + heure;
+
+        if (heure == null && date == null)
+            dateEtHeure = "Non définit";
+
+        // Ajout dans la base de données
+        ContentValues contentValues = new ContentValues();
+
+        if (!eventName.getText().toString().isEmpty())
+            contentValues.put(DBHelper.COL_2, eventName.getText().toString());
+        else
+            contentValues.put(DBHelper.COL_2,"Non définit");
+
+        if (!eventDescription.getText().toString().isEmpty())
+            contentValues.put(DBHelper.COL_3, eventDescription.getText().toString());
+        else
+            contentValues.put(DBHelper.COL_3,"Non définit");
+
+        contentValues.put(DBHelper.COL_5, dateEtHeure);
         if (place != null) {
-            Log.d("Creation", "Place: " + place.getAddress() + place.getPhoneNumber());
+            contentValues.put(DBHelper.COL_4, place.getAddress().toString());
+            contentValues.put(DBHelper.COL_6, place.getLatLng().latitude);
+            contentValues.put(DBHelper.COL_7, place.getLatLng().longitude);
         }
-        else {
-            Log.d("Creation", "place null");
-        }
-        String dateEtHeure = date+" "+heure;
-        Log.d("Creation", "date et heure :"+dateEtHeure);
-        boolean isInserted = database.insertData(eventName.getText().toString(),
-                eventDescription.getText().toString(),
-                place.getAddress().toString(), dateEtHeure,place.getLatLng().latitude, place.getLatLng().longitude );
-        Log.d("Creation ", "is insertion okay? :"+isInserted);
-
+        Uri result = getContentResolver().insert(EventContentProvider.CONTENT_URL, contentValues);
         notification();
-
     }
 
     // Boutton pour choisir la localisation de l'événement
@@ -133,14 +142,14 @@ public class CreationEventActivity extends AppCompatActivity {
         }
     }
 
-    // Fonction pour faire une notification
-    private void notification(){
+    // Fonction qui permet d'effectuer une notification (qui vibre)
+    private void notification() {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("Comeet")
                 .setContentText("Création événement");
 
-        builder.setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 });
+        builder.setVibrate(new long[]{1000, 1000, 1000, 1000, 1000});
 
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         mNotificationManager.notify(1, builder.build());

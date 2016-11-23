@@ -4,8 +4,9 @@
     <string name="title_activity_home">HomeActivity</string>
     <string name="title_activity_maps">Map</string>
     <!-- Facebook App ID : To change with the final one -->
-    <string name="facebook_app_id">1204803122896814</string>
+    <string name="facebook_app_id">913566905443005</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_add_friend">addFriendActivity</string>
 </resources>

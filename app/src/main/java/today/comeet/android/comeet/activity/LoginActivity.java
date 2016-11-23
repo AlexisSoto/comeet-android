@@ -11,21 +11,34 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+
+import com.facebook.stetho.Stetho;
 
 import today.comeet.android.comeet.fragment.FbLoginFragment;
+import today.comeet.android.comeet.fragment.LoginFragment;
 import today.comeet.android.comeet.helper.DBHelper;
 import today.comeet.android.comeet.R;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private FragmentManager mFragmentManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Stetho.initializeWithDefaults(this); // start Stetho for debug
+
+        // Hide Title Bar
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         mFragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
-        transaction.replace(android.R.id.content, new FbLoginFragment());
+        transaction.replace(android.R.id.content, new LoginFragment());
+        transaction.replace(R.id.facebook_login, new FbLoginFragment());
         transaction.commit();
+
     }
 
     @Override

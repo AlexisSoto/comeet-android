@@ -12,23 +12,17 @@
     tools:context="today.comeet.android.comeet.activity.HomeActivity"
     tools:showIn="@layout/activity_home">
 
-
-    <Button
+    <!--android.support.v7.widget.RecyclerView
+        android:id="@+id/myListSimple"
+        android:scrollbars="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Get Position"
-        android:id="@+id/btn_position"
-        />
+        android:layout_above="@+id/button"
+        android:layout_toEndOf="@+id/button" /-->
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/btn_position"
-        android:id="@+id/text_retour"
-        android:text="Valeur retournée :" />
-
-    <include layout="@layout/activity_maps"
-        />
+    <!--include layout="@layout/activity_maps"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" /-->
 
 </RelativeLayout>
