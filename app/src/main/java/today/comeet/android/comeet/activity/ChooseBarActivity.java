@@ -106,9 +106,10 @@ public class ChooseBarActivity extends AppCompatActivity {
             // Check if any photo is existing
             if (!listebar.getJSONObject(index).isNull("photos")) {
                 // Get photo reference from google api
-                Log.d("photo", "photo ref: "+listebar.getJSONObject(index).getJSONArray("photos").getJSONObject(0).getString("photo_reference"));
-                String URLimg = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference="+ listebar.getJSONObject(index).getJSONArray("photos").getJSONObject(0).getString("photo_reference")+"&key=AIzaSyD7PnqYzH87nWyRlfdYR94O8nFLsq3Y-ik";                Log.d("photo", "URL MAIN JAVA: "+"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&"+  listebar.getJSONObject(index).getJSONArray("photos").getJSONObject(0).getString("photo_reference")+ "&key=AIzaSyD7PnqYzH87nWyRlfdYR94O8nFLsq3Y-ik");
-                Log.d("photo", "URL MAIN JAVA: "+URLimg);
+                Log.d("photo", "photo ref: " + listebar.getJSONObject(index).getJSONArray("photos").getJSONObject(0).getString("photo_reference"));
+                String URLimg = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=" + listebar.getJSONObject(index).getJSONArray("photos").getJSONObject(0).getString("photo_reference") + "&key=AIzaSyD7PnqYzH87nWyRlfdYR94O8nFLsq3Y-ik";
+                Log.d("photo", "URL MAIN JAVA: " + "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&" + listebar.getJSONObject(index).getJSONArray("photos").getJSONObject(0).getString("photo_reference") + "&key=AIzaSyD7PnqYzH87nWyRlfdYR94O8nFLsq3Y-ik");
+                Log.d("photo", "URL MAIN JAVA: " + URLimg);
 
                 // Load picture from URL
                 new ImageLoadTask(URLimg, img_bar).execute();
@@ -142,15 +143,19 @@ public class ChooseBarActivity extends AppCompatActivity {
         contentValues.put(DBHelper.COL_5, dateEtHeure);
 
         // Get Bar LatLng and address
-            try {
-                contentValues.put(DBHelper.COL_4, listebar.getJSONObject(indextoShow).getString("vicinity"));
-                contentValues.put(DBHelper.COL_6,   listebar.getJSONObject(indextoShow).getJSONObject("geometry").getJSONObject("location").getString("lat"));
-                contentValues.put(DBHelper.COL_7,listebar.getJSONObject(indextoShow).getJSONObject("geometry").getJSONObject("location").getString("lng"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+        try {
+            contentValues.put(DBHelper.COL_4, listebar.getJSONObject(indextoShow).getString("vicinity"));
+            contentValues.put(DBHelper.COL_6, listebar.getJSONObject(indextoShow).getJSONObject("geometry").getJSONObject("location").getString("lat"));
+            contentValues.put(DBHelper.COL_7, listebar.getJSONObject(indextoShow).getJSONObject("geometry").getJSONObject("location").getString("lng"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         Uri result = getContentResolver().insert(EventContentProvider.CONTENT_URL, contentValues);
         notification();
+
+        //Back to HomeActivity
+        setResult(1);
+        finish();
     }
 
     // Fonction qui permet d'effectuer une notification (qui vibre)

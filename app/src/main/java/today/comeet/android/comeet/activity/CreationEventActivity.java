@@ -26,8 +26,11 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import today.comeet.android.comeet.helper.DBHelper;
 import today.comeet.android.comeet.R;
@@ -44,6 +47,8 @@ public class CreationEventActivity extends AppCompatActivity {
     private String heure;
     private Place place;
     private Button friends;
+    private JSONArray JsonArraylistFriends;
+    private ArrayList<String> listFriends;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +111,20 @@ public class CreationEventActivity extends AppCompatActivity {
 
         intent.putExtra("DateetHeureEvent", dateEtHeure);
 
-        startActivity(intent);
+        startActivityForResult(intent,1000);
+    }
+
+    @Override
+    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+        // on récupère le statut de retour de l'activité 2 c'est à dire l'activité numéro 1000
+        if(requestCode==1000){
+            // si le code de retour est égal à 1 on stoppe l'activité 1
+            if(resultCode==1){
+                // ferme l'actviité
+                finish();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     public void btn_friends(View v) {
@@ -122,7 +140,16 @@ public class CreationEventActivity extends AppCompatActivity {
                         public void onCompleted(JSONObject object, GraphResponse response) {
                             // this code is executed when the response from the API is received (async)
                             try {
-                                Log.d("friend", "name: " + object.getString("friends"));
+                                /* Retrieving friends list*/
+                                JsonArraylistFriends = object.getJSONObject("friends").getJSONArray("data");
+                                Log.d("friend", "list ami retrieve: " + JsonArraylistFriends);
+
+                                listFriends = new ArrayList<>();
+                                for (int i = 0; i < JsonArraylistFriends.length(); i++)
+                                    listFriends.add(JsonArraylistFriends.getJSONObject(i).getString("name"));
+
+                                Log.d("friend", "liste ami final: " + listFriends);
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
