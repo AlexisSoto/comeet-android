@@ -32,9 +32,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import today.comeet.android.comeet.R;
-import today.comeet.android.comeet.activity.AddFriendActivity;
-import today.comeet.android.comeet.activity.HomeActivity;
-
 
 /**
  * A simple {@link Fragment} subclass.

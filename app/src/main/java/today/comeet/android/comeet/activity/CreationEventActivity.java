@@ -114,19 +114,6 @@ public class CreationEventActivity extends AppCompatActivity {
         startActivityForResult(intent,1000);
     }
 
-    @Override
-    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
-        // on récupère le statut de retour de l'activité 2 c'est à dire l'activité numéro 1000
-        if(requestCode==1000){
-            // si le code de retour est égal à 1 on stoppe l'activité 1
-            if(resultCode==1){
-                // ferme l'actviité
-                finish();
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
     public void btn_friends(View v) {
         Log.d("friend", "boutton click");
         Profile profile = Profile.getCurrentProfile();
@@ -164,5 +151,25 @@ public class CreationEventActivity extends AppCompatActivity {
             Log.d("friend", "profile == null");
 
         }
+    }
+
+
+    /**
+     * Method permit to back to Home (with the result code send by ChooseBarActivity)
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+        // on récupère le statut de retour de l'activité 2 c'est à dire l'activité numéro 1000
+        if(requestCode==1000){
+            // si le code de retour est égal à 1 on stoppe l'activité 1
+            if(resultCode==1){
+                // ferme l'actviité
+                finish();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

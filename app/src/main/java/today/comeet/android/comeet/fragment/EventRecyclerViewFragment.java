@@ -18,6 +18,7 @@ import java.util.List;
 
 import today.comeet.android.comeet.R;
 import today.comeet.android.comeet.activity.EventDetailActivity;
+import today.comeet.android.comeet.adapter.DividerItemDecoration;
 import today.comeet.android.comeet.listener.RecyclerItemClickListener;
 import today.comeet.android.comeet.adapter.RecyclerSimpleViewAdapter;
 
@@ -50,6 +51,10 @@ public class EventRecyclerViewFragment extends Fragment {
             evenements.add("Evenement: "+cursor.getString(1)+ "\nLe: "+cursor.getString(4));
         }
 
+        /*add Item Decoration */
+        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), R.drawable.divider));
+
+        /* Set adapter to the recyclerView */
         recyclerView.setAdapter(new RecyclerSimpleViewAdapter(evenements, android.R.layout.simple_list_item_1));
         recyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getContext(), new RecyclerItemClickListener.OnItemClickListener() {
