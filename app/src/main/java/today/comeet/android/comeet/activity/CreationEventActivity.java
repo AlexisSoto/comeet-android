@@ -86,6 +86,7 @@ public class CreationEventActivity extends AppCompatActivity {
                 heure = hourOfDay + ":" + minute + ":00";
             }
         },  calendar.get(Calendar.HOUR),  calendar.get(Calendar.MINUTE), true);
+        timepicker.setTitle("");
         timepicker.show();
 
     }
