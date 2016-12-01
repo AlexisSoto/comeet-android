@@ -25,21 +25,21 @@
         <item name="android:datePickerStyle">@style/MyDatePicker</item>
 
         <!-- Dialog style-->
-        <item name="android:colorAccent">@color/colorPrimary</item>
-        <item name="android:textColorPrimary">@color/colorPrimary</item>
-        <item name="android:windowBackground">@color/white</item>
+        <item name="android:colorAccent">@color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:windowBackground">@color/colorItemLight</item>
     </style>
 
     <style name="MyTimePicker" parent="android:Widget.Material.TimePicker">
         <item name="android:timePickerMode">spinner</item>
-        <item name="android:colorAccent">@color/colorPrimary</item>
+        <item name="android:colorAccent">@color/white</item>
 
     </style>
 
     <style name="MyDatePicker" parent="android:Widget.Material.DatePicker">
-        <item name="android:headerBackground">@color/colorPrimary</item>
-        <item name="android:calendarTextColor">@color/colorPrimary</item>
-        <item name="android:dayOfWeekBackground">@color/colorPrimary</item>
-        <item name="android:yearListSelectorColor">@color/colorPrimary</item>
+        <item name="android:headerBackground">@color/white</item>
+        <item name="android:calendarTextColor">@color/white</item>
+        <item name="android:dayOfWeekBackground">@color/white</item>
+        <item name="android:yearListSelectorColor">@color/white</item>
     </style>
 </resources>
