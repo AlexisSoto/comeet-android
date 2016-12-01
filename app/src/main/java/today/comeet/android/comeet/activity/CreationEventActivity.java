@@ -31,6 +31,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import today.comeet.android.comeet.helper.DBHelper;
 import today.comeet.android.comeet.R;
@@ -49,6 +50,7 @@ public class CreationEventActivity extends AppCompatActivity {
     private Button friends;
     private JSONArray JsonArraylistFriends;
     private ArrayList<String> listFriends;
+    private Calendar calendar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,17 +59,21 @@ public class CreationEventActivity extends AppCompatActivity {
         eventName = (EditText) findViewById(R.id.event_name);
         eventDescription = (EditText) findViewById(R.id.event_description);
         friends = (Button) findViewById(R.id.add_friends);
+
+        /* Using Calendar to get current date & hour*/
+        calendar = Calendar.getInstance();
     }
 
     // Boutton pour choisir la date
     public void btn_ChooseDate(View v) {
+
+
         dpd = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                // txt_confirmation_date.setText("Date:" + dayOfMonth + " " + (monthOfYear + 1) + " " + year);
-                date = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
+                date = year + "-" + (monthOfYear) + "-" + dayOfMonth;
             }
-        }, 2015, 11, 26);
+        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         dpd.show();
     }
 
@@ -76,10 +82,10 @@ public class CreationEventActivity extends AppCompatActivity {
         timepicker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                //Toast.makeText(getApplicationContext(), "Heure choisit", Toast.LENGTH_LONG).show();
+                Log.d("heure", "hour: "+hourOfDay+ ", minute: "+minute);
                 heure = hourOfDay + ":" + minute + ":00";
             }
-        }, 7, 40, true);
+        },  calendar.get(Calendar.HOUR),  calendar.get(Calendar.MINUTE), true);
         timepicker.show();
 
     }
@@ -111,7 +117,7 @@ public class CreationEventActivity extends AppCompatActivity {
 
         intent.putExtra("DateetHeureEvent", dateEtHeure);
 
-        startActivityForResult(intent,1000);
+        startActivityForResult(intent, 1000);
     }
 
     public void btn_friends(View v) {
@@ -156,16 +162,17 @@ public class CreationEventActivity extends AppCompatActivity {
 
     /**
      * Method permit to back to Home (with the result code send by ChooseBarActivity)
+     *
      * @param requestCode
      * @param resultCode
      * @param data
      */
     @Override
-    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // on récupère le statut de retour de l'activité 2 c'est à dire l'activité numéro 1000
-        if(requestCode==1000){
+        if (requestCode == 1000) {
             // si le code de retour est égal à 1 on stoppe l'activité 1
-            if(resultCode==1){
+            if (resultCode == 1) {
                 // ferme l'actviité
                 finish();
             }
