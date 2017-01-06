@@ -51,6 +51,7 @@ public class CreationEventActivity extends AppCompatActivity {
     private JSONArray JsonArraylistFriends;
     private ArrayList<String> listFriends;
     private Calendar calendar;
+    private ArrayList<String> participant;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +119,11 @@ public class CreationEventActivity extends AppCompatActivity {
 
         intent.putExtra("DateetHeureEvent", dateEtHeure);
 
+        if (participant.isEmpty())
+            intent.putExtra("participants", "aucun amis");
+        else
+            intent.putExtra("participants",participant);
+
         startActivityForResult(intent, 1000);
     }
 
@@ -152,7 +158,7 @@ public class CreationEventActivity extends AppCompatActivity {
                                 /*Launch ChooseFriends Activity*/
                                 Intent intent_friends = new Intent(getApplicationContext(), ChooseFriendsActivity.class);
                                 intent_friends.putExtra("friends_list", listFriends);
-                                startActivity(intent_friends);
+                                startActivityForResult(intent_friends,2000);
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -188,6 +194,13 @@ public class CreationEventActivity extends AppCompatActivity {
                 finish();
             }
         }
+        if (requestCode == 2000) {
+            /*  Récupère la liste des participants à l'événements*/
+            if (resultCode == RESULT_OK) {
+                participant =data.getStringArrayListExtra("liste_participant");
+            }
+        }
+
         super.onActivityResult(requestCode, resultCode, data);
     }
 }

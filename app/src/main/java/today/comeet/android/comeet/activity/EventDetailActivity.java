@@ -41,8 +41,9 @@ public class EventDetailActivity extends AppCompatActivity {
     private String eventDescription;
     private String eventLocalisation;
     private String eventDate;
+    private String participants;
 
-    /* Affichage des attributs */
+    /* Affichage des attributs de l'événement*/
     private TextView txtEventName;
     private TextView txtEventDescription;
     private TextView txtEventLocalisation;
@@ -50,6 +51,7 @@ public class EventDetailActivity extends AppCompatActivity {
     private Button btnitineraire;
     private boolean permissionsEnabled;
     private LatLng latLng;
+    private TextView txtEventParticipants;
 
 
     @Override
@@ -73,15 +75,16 @@ public class EventDetailActivity extends AppCompatActivity {
         txtEventDescription = (TextView) findViewById(R.id.descriptionEvent);
         txtEventLocalisation = (TextView) findViewById(R.id.eventlocalisation);
         btnitineraire = (Button) findViewById(R.id.btn_itineraire);
+        txtEventParticipants = (TextView) findViewById(R.id.eventparticipant);
 
         // Loading Choosen Event
         Cursor cursor = getContentResolver().query(Uri.parse("content://today.comeet.android.comeet/elements/" + idEventToPrint), null, null, null, null);
-
         while (cursor.moveToNext()) {
             eventName = cursor.getString(1);
             eventDescription = cursor.getString(2);
             eventLocalisation = cursor.getString(3);
             eventDate = cursor.getString(4);
+            participants = cursor.getString(7);
         }
         // Printing in TextView
         txtEventName.append(eventName);
@@ -91,6 +94,7 @@ public class EventDetailActivity extends AppCompatActivity {
             txtEventLocalisation.append(eventLocalisation);
         else
             txtEventLocalisation.append("Non définit");
+        txtEventParticipants.append(participants);
     }
 
     public void btnItineraireOnclick(View v) {

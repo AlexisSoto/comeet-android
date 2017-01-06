@@ -23,6 +23,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String COL_5 = "DATE";
     public static final String COL_6 = "LATTITUDE";
     public static final String COL_7 = "LONGITUDE";
+    public static final String COL_8 = "AMIS";
 
     // version de la base de données
     public static final int DATABASE_VERSION = 1;
@@ -34,7 +35,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT,NAME TEXT,DESCRIPTION TEXT,LOCALISATION TEXT, DATE TEXT, LATTITUDE INTEGER, LONGITUDE INTEGER)");
+        db.execSQL("create table " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT,NAME TEXT,DESCRIPTION TEXT,LOCALISATION TEXT, DATE TEXT, LATTITUDE INTEGER, LONGITUDE INTEGER, AMIS TEXT)");
     }
 
     @Override

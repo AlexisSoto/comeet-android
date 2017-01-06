@@ -1,22 +1,25 @@
 package today.comeet.android.comeet.activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 
 import today.comeet.android.comeet.R;
+import today.comeet.android.comeet.helper.ConverterHelper;
 
 public class ChooseFriendsActivity extends AppCompatActivity {
 
     private ListView friendsListView;
     private ArrayList<String> friendsListName;
+    private ArrayList<String> participants;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,7 @@ public class ChooseFriendsActivity extends AppCompatActivity {
         }
 
         friendsListView = (ListView) findViewById(R.id.listView_friends);
+        participants = new ArrayList<>();
 
         /* Inflate the Listview with the friendsName*/
         ArrayAdapter arrayAdapter = new ArrayAdapter<String>(ChooseFriendsActivity.this, android.R.layout.simple_list_item_multiple_choice, friendsListName);
@@ -53,9 +57,24 @@ public class ChooseFriendsActivity extends AppCompatActivity {
      * @param v
      */
     public void btn_get_participants(View v) {
-       Log.i ("friend", "participant à l'événement: ");
-        SparseBooleanArray checked = friendsListView.getCheckedItemPositions();
-        Log.i ("friend", "numero checked: "+checked);
+        SparseBooleanArray Arraychecked = friendsListView.getCheckedItemPositions();
+
+        /*Warning, here is"<=" (and not "<" )
+        * We use the listview and the checkbox to know which friends are taking part of this event.
+        * */
+        for (int i = 0 ; i <= Arraychecked.size(); i++) {
+            if (Arraychecked.get(i)) {
+                participants.add(friendsListName.get(i));
+            }
+        }
+        Log.i("friend","liste participants: "+participants);
+
+        /* Sending the list of participant to CreationEventActivity */
+        Intent intent = new Intent();
+        intent.putExtra("liste_participant", participants);
+        setResult(RESULT_OK, intent);
+
+        finish();
     }
 
     /**

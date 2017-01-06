@@ -17,7 +17,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import today.comeet.android.comeet.R;
+import today.comeet.android.comeet.helper.ConverterHelper;
 import today.comeet.android.comeet.helper.DBHelper;
 import today.comeet.android.comeet.helper.GoogleApiHelper;
 import today.comeet.android.comeet.modules.ImageLoadTask;
@@ -32,6 +35,7 @@ public class ChooseBarActivity extends AppCompatActivity {
     private String eventName;
     private String eventDescription;
     private ImageView img_bar;
+    private String participants;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +50,11 @@ public class ChooseBarActivity extends AppCompatActivity {
             eventName = extras.getString("nameEvent");
             eventDescription = extras.getString("descriptionEvent");
         }
+
+        /* We are converting the ArrayString into String to put it in Database*/
+        ArrayList<String> participant_recieve = getIntent().getStringArrayListExtra("participants");
+        ConverterHelper converterHelper = new ConverterHelper();
+        participants = converterHelper.convertArrayToString(participant_recieve);
 
         txtgetbar = (TextView) findViewById(R.id.getbar);
         img_bar = (ImageView) findViewById(R.id.img_bar);
@@ -150,6 +159,10 @@ public class ChooseBarActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        // Participants
+        contentValues.put(DBHelper.COL_8, participants);
+
         Uri result = getContentResolver().insert(EventContentProvider.CONTENT_URL, contentValues);
         notification();
 

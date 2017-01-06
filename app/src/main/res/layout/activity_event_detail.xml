@@ -78,5 +78,16 @@
         android:layout_marginTop="37dp"
         android:layout_alignParentEnd="true" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Participants: "
+        android:id="@+id/eventparticipant"
+        android:textSize="15dp"
+        android:layout_below="@+id/eventlocalisation"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="37dp"
+        android:layout_alignParentEnd="true" />
+
 
 </RelativeLayout>
