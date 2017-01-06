@@ -51,7 +51,8 @@
 
         <activity android:name=".activity.EventDetailActivity" />
         <activity android:name=".activity.ItineraireActivity" />
-        <activity android:name=".activity.ChooseBarActivity"></activity>
+        <activity android:name=".activity.ChooseBarActivity" />
+        <activity android:name=".activity.ChooseFriendsActivity"></activity>
     </application>
 
 </manifest>

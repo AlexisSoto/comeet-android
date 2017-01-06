@@ -121,6 +121,11 @@ public class CreationEventActivity extends AppCompatActivity {
         startActivityForResult(intent, 1000);
     }
 
+    /**
+     * Method to get friends and launch the "ChooseFriendsActivity"
+     * @param v
+     */
+
     public void btn_friends(View v) {
         Log.d("friend", "boutton click");
         Profile profile = Profile.getCurrentProfile();
@@ -143,6 +148,11 @@ public class CreationEventActivity extends AppCompatActivity {
                                     listFriends.add(JsonArraylistFriends.getJSONObject(i).getString("name"));
 
                                 Log.d("friend", "liste ami final: " + listFriends);
+
+                                /*Launch ChooseFriends Activity*/
+                                Intent intent_friends = new Intent(getApplicationContext(), ChooseFriendsActivity.class);
+                                intent_friends.putExtra("friends_list", listFriends);
+                                startActivity(intent_friends);
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
