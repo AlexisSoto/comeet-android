@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.Profile;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -53,9 +54,17 @@ public class ChooseBarActivity extends AppCompatActivity {
 
         /* We are converting the ArrayString into String to put it in Database*/
         ArrayList<String> participant_recieve = getIntent().getStringArrayListExtra("participants");
-        ConverterHelper converterHelper = new ConverterHelper();
-        participants = converterHelper.convertArrayToString(participant_recieve);
 
+        /*
+        * We have to take care, it could be an ArrayList<String> or a String
+        * */
+        if (participant_recieve != null) {
+            ConverterHelper converterHelper = new ConverterHelper();
+            participants = converterHelper.convertArrayToString(participant_recieve);
+        } else {
+            participants = getIntent().getExtras().getString("participants");
+        }
+        
         txtgetbar = (TextView) findViewById(R.id.getbar);
         img_bar = (ImageView) findViewById(R.id.img_bar);
         indextoShow = 0;
@@ -164,6 +173,8 @@ public class ChooseBarActivity extends AppCompatActivity {
         contentValues.put(DBHelper.COL_8, participants);
 
         Uri result = getContentResolver().insert(EventContentProvider.CONTENT_URL, contentValues);
+
+
         notification();
 
         //Back to HomeActivity

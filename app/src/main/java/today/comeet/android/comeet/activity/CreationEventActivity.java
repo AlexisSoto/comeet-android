@@ -119,8 +119,14 @@ public class CreationEventActivity extends AppCompatActivity {
 
         intent.putExtra("DateetHeureEvent", dateEtHeure);
 
-        if (participant.isEmpty())
-            intent.putExtra("participants", "aucun amis");
+        /*
+        * 2 cases :
+        * participant == null ==> No friends, so we send a string
+        * participant != null ==> We send, an array of friends (so ArrayList<String> )
+        *
+        * */
+        if (participant == null)
+                intent.putExtra("participants", "aucun amis");
         else
             intent.putExtra("participants",participant);
 
@@ -137,6 +143,8 @@ public class CreationEventActivity extends AppCompatActivity {
         Profile profile = Profile.getCurrentProfile();
         if (profile != null) {
             Log.d("friend", "profile != null");
+            Log.d("friend", "profile name: "+profile.getName());
+
             // we will query the name with the openGraph API
             GraphRequest request = GraphRequest.newMeRequest(
                     AccessToken.getCurrentAccessToken(),
@@ -197,7 +205,7 @@ public class CreationEventActivity extends AppCompatActivity {
         if (requestCode == 2000) {
             /*  Récupère la liste des participants à l'événements*/
             if (resultCode == RESULT_OK) {
-                participant =data.getStringArrayListExtra("liste_participant");
+                participant = data.getStringArrayListExtra("liste_participant");
             }
         }
 
