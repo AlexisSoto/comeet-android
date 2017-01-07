@@ -61,75 +61,51 @@ public class ProfileFragment extends Fragment {
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
 
         // Checking connexion
-        if (netInfo== null ) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            builder.setMessage("Vous avez besoin d'une connexion internet pour charger cette page. Veuillez activer les données mobiles ou le wifi, et recharger la page.")
-                    .setTitle("Impossible de se connecter")
-                    .setCancelable(false)
-                    .setPositiveButton("Paramètres",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    Intent i = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
-                                    startActivity(i);
-                                }
+        if (netInfo != null) {
+
+            profileName = (TextView) rootView.findViewById(R.id.profile_name);
+            profilePicture = (ImageView) rootView.findViewById(R.id.profile_picture);
+
+            // we will query the name with the openGraph API
+            GraphRequest request = GraphRequest.newMeRequest(
+                    AccessToken.getCurrentAccessToken(),
+                    new GraphRequest.GraphJSONObjectCallback() {
+                        @Override
+                        public void onCompleted(JSONObject object, GraphResponse response) {
+                            // this code is executed when the response from the API is received (async)
+                            try {
+                                profileName.setText(object.getString("name"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                    )
-                    .setNegativeButton("Retour",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                   // ChooseBarActivity.this.finish();
-                                }
+                        }
+                    });
+            // we pass the right parameters for the query : fields=name
+            Bundle parameters = new Bundle();
+            parameters.putString("fields", "name");
+            request.setParameters(parameters);
+            request.executeAsync(); // execute the query
+
+
+            // We will query the profile picture
+            GraphRequest pictureRequest = GraphRequest.newGraphPathRequest(
+                    AccessToken.getCurrentAccessToken(),
+                    "/me/picture",
+                    new GraphRequest.Callback() {
+                        @Override
+                        public void onCompleted(GraphResponse pictureResponse) {
+                            try {
+                                Picasso.with(getContext()).load(pictureResponse.getJSONObject().getJSONObject("data").getString("url")).into(profilePicture);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                    );
-            AlertDialog alert = builder.create();
-            alert.show();
-
-            return null;
-
-        }
-        profileName = (TextView)rootView.findViewById(R.id.profile_name);
-        profilePicture = (ImageView) rootView.findViewById(R.id.profile_picture);
-
-        // we will query the name with the openGraph API
-        GraphRequest request = GraphRequest.newMeRequest(
-                AccessToken.getCurrentAccessToken(),
-                new GraphRequest.GraphJSONObjectCallback() {
-                    @Override
-                    public void onCompleted(JSONObject object, GraphResponse response) {
-                        // this code is executed when the response from the API is received (async)
-                        try {
-                            profileName.setText(object.getString("name"));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
-                    }
-                });
-        // we pass the right parameters for the query : fields=name
-        Bundle parameters = new Bundle();
-        parameters.putString("fields", "name");
-        request.setParameters(parameters);
-        request.executeAsync(); // execute the query
+                    });
 
-
-        // We will query the profile picture
-        GraphRequest pictureRequest = GraphRequest.newGraphPathRequest(
-                AccessToken.getCurrentAccessToken(),
-                "/me/picture",
-                new GraphRequest.Callback() {
-                    @Override
-                    public void onCompleted(GraphResponse pictureResponse) {
-                        try {
-                            Picasso.with(getContext()).load(pictureResponse.getJSONObject().getJSONObject("data").getString("url")).into(profilePicture);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-
-        Bundle pictureParameters = new Bundle();
-        pictureParameters.putString("redirect", "false");
-        pictureRequest.setParameters(pictureParameters);
-        pictureRequest.executeAsync();
+            Bundle pictureParameters = new Bundle();
+            pictureParameters.putString("redirect", "false");
+            pictureRequest.setParameters(pictureParameters);
+            pictureRequest.executeAsync();
 
 
         /* Logout Facebook fragment
@@ -139,9 +115,14 @@ public class ProfileFragment extends Fragment {
         transaction.commit();*/
 
 
+            // Inflate the layout for this fragment
+            return rootView;
+        }
+        // No internet connexion
+        else {
 
-        // Inflate the layout for this fragment
-        return rootView;
+            return null;
+        }
     }
 
 }
