@@ -4,10 +4,16 @@ import android.app.DatePickerDialog;
 import android.app.NotificationManager;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -139,7 +145,40 @@ public class CreationEventActivity extends AppCompatActivity {
      */
 
     public void btn_friends(View v) {
-        Log.d("friend", "boutton click");
+
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+
+        if (netInfo==null) {
+            Log.d("internet", "pas connexion");
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Vous avez besoin d'une connexion internet pour charger cette page. Veuillez activer les données mobiles ou le wifi, et recharger la page.")
+                    .setTitle("Impossible de se connecter")
+                    .setCancelable(false)
+                    .setPositiveButton("Paramètres",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    Intent i = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
+                                    startActivity(i);
+                                }
+                            }
+                    )
+                    .setNegativeButton("Retour",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    // ChooseBarActivity.this.finish();
+                                }
+                            }
+                    );
+
+            AlertDialog alert = builder.create();
+            alert.show();
+            return;
+        } else {
+            Log.d("internet", "connexion");
+
+        }
         Profile profile = Profile.getCurrentProfile();
         if (profile != null) {
             Log.d("friend", "profile != null");

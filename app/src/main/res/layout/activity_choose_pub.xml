@@ -45,4 +45,14 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:gravity="center"
+        android:id="@+id/numberResult"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_alignTop="@+id/btn_next_bar" />
+
 </RelativeLayout>

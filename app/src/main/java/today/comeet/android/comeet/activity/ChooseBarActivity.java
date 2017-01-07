@@ -17,6 +17,7 @@ import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -36,6 +37,7 @@ public class ChooseBarActivity extends AppCompatActivity {
     private String eventName;
     private String eventDescription;
     private ImageView img_bar;
+    private TextView numberResult;
     private String participants;
 
     @Override
@@ -64,9 +66,10 @@ public class ChooseBarActivity extends AppCompatActivity {
         } else {
             participants = getIntent().getExtras().getString("participants");
         }
-        
+
         txtgetbar = (TextView) findViewById(R.id.getbar);
         img_bar = (ImageView) findViewById(R.id.img_bar);
+        numberResult = (TextView) findViewById(R.id.numberResult);
         indextoShow = 0;
     }
 
@@ -119,7 +122,9 @@ public class ChooseBarActivity extends AppCompatActivity {
     /* Load  retrieve data to Textview, imageview etc */
     private void LoadContentbyIndex(int index) {
         try {
+
             txtgetbar.setText("Nom: " + listebar.getJSONObject(index).getString("name") + "\nLocalisation: " + listebar.getJSONObject(index).getString("vicinity"));
+            numberResult.setText("resultat "+(indextoShow+1)+" sur "+listebar.length());
 
             // Check if any photo is existing
             if (!listebar.getJSONObject(index).isNull("photos")) {
