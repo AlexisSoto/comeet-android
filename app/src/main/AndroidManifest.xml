@@ -49,11 +49,14 @@
             android:name=".provider.EventContentProvider"
             android:authorities="today.comeet.android.comeet" />
 
-        <activity android:name=".activity.EventDetail" />
+        <activity android:name=".activity.EventDetailActivity" />
+        <activity android:name=".activity.ItineraireActivity" />
         <activity
-            android:name=".activity.AddFriendActivity"
-            android:label="@string/title_activity_add_friend"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:name=".activity.ChooseBarActivity"
+            android:label="Choisissez votre bar" />
+        <activity android:name=".activity.ChooseFriendsActivity" />
+        <activity android:name=".activity.CreatingAdressHomeActivity"
+            android:label="Bienvenue"/>
     </application>
 
 </manifest>

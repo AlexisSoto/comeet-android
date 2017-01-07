@@ -4,22 +4,40 @@ import android.app.DatePickerDialog;
 import android.app.NotificationManager;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.Profile;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Calendar;
 
 import today.comeet.android.comeet.helper.DBHelper;
 import today.comeet.android.comeet.R;
@@ -28,14 +46,18 @@ import today.comeet.android.comeet.provider.EventContentProvider;
 
 public class CreationEventActivity extends AppCompatActivity {
 
-    DatePickerDialog dpd = null;
-    TimePickerDialog timepicker;
-    EditText eventName;
-    EditText eventDescription;
-    String date;
-    String heure;
-    Place place;
-
+    private DatePickerDialog dpd = null;
+    private TimePickerDialog timepicker;
+    private EditText eventName;
+    private EditText eventDescription;
+    private String date;
+    private String heure;
+    private Place place;
+    private Button friends;
+    private JSONArray JsonArraylistFriends;
+    private ArrayList<String> listFriends;
+    private Calendar calendar;
+    private ArrayList<String> participant;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,17 +65,22 @@ public class CreationEventActivity extends AppCompatActivity {
         setContentView(R.layout.activity_creation_event);
         eventName = (EditText) findViewById(R.id.event_name);
         eventDescription = (EditText) findViewById(R.id.event_description);
+        friends = (Button) findViewById(R.id.add_friends);
+
+        /* Using Calendar to get current date & hour*/
+        calendar = Calendar.getInstance();
     }
 
     // Boutton pour choisir la date
     public void btn_ChooseDate(View v) {
+
+
         dpd = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                // txt_confirmation_date.setText("Date:" + dayOfMonth + " " + (monthOfYear + 1) + " " + year);
-                date = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
+                date = year + "-" + (monthOfYear) + "-" + dayOfMonth;
             }
-        }, 2015, 11, 26);
+        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         dpd.show();
     }
 
@@ -62,16 +89,17 @@ public class CreationEventActivity extends AppCompatActivity {
         timepicker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                //Toast.makeText(getApplicationContext(), "Heure choisit", Toast.LENGTH_LONG).show();
+                Log.d("heure", "hour: "+hourOfDay+ ", minute: "+minute);
                 heure = hourOfDay + ":" + minute + ":00";
             }
-        }, 7, 40, true);
+        },  calendar.get(Calendar.HOUR),  calendar.get(Calendar.MINUTE), true);
+        timepicker.setTitle("");
         timepicker.show();
 
     }
 
-    // Boutton pour créer un nouvel événement
-    public void btn_new_event(View v) {
+    public void btn_launch_choose_bar(View v) {
+
         String dateEtHeure = "";
         if (date != null)
             dateEtHeure += date;
@@ -81,78 +109,145 @@ public class CreationEventActivity extends AppCompatActivity {
         if (heure == null && date == null)
             dateEtHeure = "Non définit";
 
-        // Ajout dans la base de données
-        ContentValues contentValues = new ContentValues();
+        // Launch ChooseBarActivity
+        Intent intent = new Intent(getApplicationContext(), ChooseBarActivity.class);
 
+        // Send Data to create new event
         if (!eventName.getText().toString().isEmpty())
-            contentValues.put(DBHelper.COL_2, eventName.getText().toString());
+            intent.putExtra("nameEvent", eventName.getText().toString());
         else
-            contentValues.put(DBHelper.COL_2,"Non définit");
+            intent.putExtra("nameEvent", "Non définit");
 
         if (!eventDescription.getText().toString().isEmpty())
-            contentValues.put(DBHelper.COL_3, eventDescription.getText().toString());
+            intent.putExtra("descriptionEvent", eventDescription.getText().toString());
         else
-            contentValues.put(DBHelper.COL_3,"Non définit");
+            intent.putExtra("descriptionEvent", "Non définit");
 
-        contentValues.put(DBHelper.COL_5, dateEtHeure);
-        if (place != null) {
-            contentValues.put(DBHelper.COL_4, place.getAddress().toString());
-            contentValues.put(DBHelper.COL_6, place.getLatLng().latitude);
-            contentValues.put(DBHelper.COL_7, place.getLatLng().longitude);
-        }
-        Uri result = getContentResolver().insert(EventContentProvider.CONTENT_URL, contentValues);
-        notification();
+        intent.putExtra("DateetHeureEvent", dateEtHeure);
+
+        /*
+        * 2 cases :
+        * participant == null ==> No friends, so we send a string
+        * participant != null ==> We send, an array of friends (so ArrayList<String> )
+        *
+        * */
+        if (participant == null)
+                intent.putExtra("participants", "aucun amis");
+        else
+            intent.putExtra("participants",participant);
+
+        startActivityForResult(intent, 1000);
     }
 
-    // Boutton pour choisir la localisation de l'événement
-    public void autocompletePlace(View view) {
-        try {
-            // Ouvre une nouvelle fenêtre pour ajouter la localisation souhaité
-            Intent intent =
-                    new PlaceAutocomplete
-                            .IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
-                            .build(this);
-            // Indique qu'on attends un résultat (dans notre cas, une adresse)
-            startActivityForResult(intent, 1);
-        } catch (GooglePlayServicesRepairableException e) {
-            // TODO: Handle the error.
-        } catch (GooglePlayServicesNotAvailableException e) {
-            // TODO: Handle the error.
+    /**
+     * Method to get friends and launch the "ChooseFriendsActivity"
+     * @param v
+     */
+
+    public void btn_friends(View v) {
+
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+
+        if (netInfo==null) {
+            Log.d("internet", "pas connexion");
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Vous avez besoin d'une connexion internet pour charger cette page. Veuillez activer les données mobiles ou le wifi, et recharger la page.")
+                    .setTitle("Impossible de se connecter")
+                    .setCancelable(false)
+                    .setPositiveButton("Paramètres",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    Intent i = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
+                                    startActivity(i);
+                                }
+                            }
+                    )
+                    .setNegativeButton("Retour",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    // ChooseBarActivity.this.finish();
+                                }
+                            }
+                    );
+
+            AlertDialog alert = builder.create();
+            alert.show();
+            return;
+        } else {
+            Log.d("internet", "connexion");
+
+        }
+        Profile profile = Profile.getCurrentProfile();
+        if (profile != null) {
+            Log.d("friend", "profile != null");
+            Log.d("friend", "profile name: "+profile.getName());
+
+            // we will query the name with the openGraph API
+            GraphRequest request = GraphRequest.newMeRequest(
+                    AccessToken.getCurrentAccessToken(),
+                    new GraphRequest.GraphJSONObjectCallback() {
+                        @Override
+                        public void onCompleted(JSONObject object, GraphResponse response) {
+                            // this code is executed when the response from the API is received (async)
+                            try {
+                                /* Retrieving friends list*/
+                                JsonArraylistFriends = object.getJSONObject("friends").getJSONArray("data");
+                                Log.d("friend", "list ami retrieve: " + JsonArraylistFriends);
+
+                                listFriends = new ArrayList<>();
+                                for (int i = 0; i < JsonArraylistFriends.length(); i++)
+                                    listFriends.add(JsonArraylistFriends.getJSONObject(i).getString("name"));
+
+                                Log.d("friend", "liste ami final: " + listFriends);
+
+                                /*Launch ChooseFriends Activity*/
+                                Intent intent_friends = new Intent(getApplicationContext(), ChooseFriendsActivity.class);
+                                intent_friends.putExtra("friends_list", listFriends);
+                                startActivityForResult(intent_friends,2000);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+            // we pass the right parameters for the query : fields=name
+            Bundle parameters = new Bundle();
+            parameters.putString("fields", "friends");
+            request.setParameters(parameters);
+            request.executeAsync(); // execute the query
+        } else {
+            Log.d("friend", "profile == null");
+
         }
     }
 
+
+    /**
+     * Method permit to back to Home (with the result code send by ChooseBarActivity)
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
-    // Fonction qui s'exécute quand on a choisit une adresse
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // Si tout s'est bien déroulé
-        if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-                // Récupère les données de la place choisit
-                place = PlaceAutocomplete.getPlace(this, data);
-            }
-            // Dans le cas où il y a une erreur
-            else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
-                Status status = PlaceAutocomplete.getStatus(this, data);
-                // TODO: Handle the error.
-                Log.e("Tag", status.getStatusMessage());
-            }
-            // Si l'utilisateur retourne en arrière
-            else if (resultCode == RESULT_CANCELED) {
+        // on récupère le statut de retour de l'activité 2 c'est à dire l'activité numéro 1000
+        if (requestCode == 1000) {
+            // si le code de retour est égal à 1 on stoppe l'activité 1
+            if (resultCode == 1) {
+                // ferme l'actviité
+                finish();
             }
         }
-    }
+        if (requestCode == 2000) {
+            /*  Récupère la liste des participants à l'événements*/
+            if (resultCode == RESULT_OK) {
+                participant = data.getStringArrayListExtra("liste_participant");
+            }
+        }
 
-    // Fonction qui permet d'effectuer une notification (qui vibre)
-    private void notification() {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Comeet")
-                .setContentText("Création événement");
-
-        builder.setVibrate(new long[]{1000, 1000, 1000, 1000, 1000});
-
-        NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        mNotificationManager.notify(1, builder.build());
-
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

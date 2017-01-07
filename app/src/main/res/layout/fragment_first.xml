@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
-        android:layout_gravity="center_vertical|right"
+        android:layout_gravity="center_vertical|center"
         android:onClick="btn_create_event"
         android:layout_margin="@dimen/fab_margin"
         app:layout_anchor="@+id/container"
@@ -29,12 +29,11 @@
     </FrameLayout>
 
     <FrameLayout
-        android:id="@+id/Map_Fragment"
+        android:id="@+id/Profile_Fragment"
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:background="@android:color/transparent"
         android:layout_marginBottom="218dp"
-        android:layout_above="@+id/btn_position"
         android:layout_alignParentStart="true">
 
     </FrameLayout>

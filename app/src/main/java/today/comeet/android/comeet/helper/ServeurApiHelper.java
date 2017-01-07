@@ -16,12 +16,12 @@ import java.util.Map;
 /**
  * Created by sachavent on 20/10/2016.
  */
-public class ApiHelper {
+public class ServeurApiHelper {
 
     private RequestQueue queue;
     private String url = "http://api.comeet.today:8080";
 
-    public ApiHelper(Context context) {
+    public ServeurApiHelper(Context context) {
         queue = Volley.newRequestQueue(context);
     }
 

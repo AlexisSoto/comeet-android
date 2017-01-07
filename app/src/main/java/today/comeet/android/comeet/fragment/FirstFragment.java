@@ -46,15 +46,6 @@ public class FirstFragment extends Fragment {
         super.onStart();
         FragmentManager fm = getFragmentManager();
         fm.beginTransaction().replace(R.id.Events_Fragment, new EventRecyclerViewFragment()).commit();
-        fm.beginTransaction().replace(R.id.Map_Fragment, new GoogleMapFragment()).commit();
-
-        /*buttonEventCreate = (FloatingActionButton) getView().findViewById(R.id.Button_CreateEvent);
-        buttonEventCreate.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startActivity(new Intent(getContext(), CreationEventActivity.class));
-                    }
-                });*/
+        fm.beginTransaction().replace(R.id.Profile_Fragment, new ProfileFragment()).commit();
     }
 }

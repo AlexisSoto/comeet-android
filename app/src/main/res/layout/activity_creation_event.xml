@@ -26,6 +26,8 @@
         android:layout_alignParentStart="true"
         android:layout_marginTop="82dp"
         android:onClick="btn_ChooseDate"
+        android:background="@drawable/round_button"
+        android:textColor="#FFFFFF"
         android:text="Choisissez la date" />
 
     <Button
@@ -35,6 +37,8 @@
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:onClick="btn_Choosehour"
+        android:background="@drawable/round_button"
+        android:textColor="#FFFFFF"
         android:text="Choisissez l'heure" />
 
     <EditText
@@ -53,18 +57,23 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true"
-        android:onClick="btn_new_event"
-        android:text="Créez votre événement" />
+        android:background="@drawable/round_button"
+        android:textColor="#FFFFFF"
+        android:onClick="btn_launch_choose_bar"
+        android:text="Suivant" />
 
     <Button
-        android:id="@+id/setlocalisation"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="avec qui"
+        android:onClick="btn_friends"
+        android:id="@+id/add_friends"
+        android:background="@drawable/round_button"
+        android:textColor="#FFFFFF"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="37dp"
-        android:onClick="autocompletePlace"
-        android:text="Choisissez la localisation" />
+        android:layout_marginBottom="55dp"
+        android:layout_alignParentEnd="true" />
 
 
 </RelativeLayout>

@@ -23,9 +23,10 @@ import com.facebook.login.widget.LoginButton;
 
 
 import today.comeet.android.comeet.R;
+import today.comeet.android.comeet.activity.CreatingAdressHomeActivity;
 import today.comeet.android.comeet.activity.HomeActivity;
 import today.comeet.android.comeet.activity.LoginActivity;
-import today.comeet.android.comeet.helper.ApiHelper;
+import today.comeet.android.comeet.helper.ServeurApiHelper;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -56,11 +57,19 @@ public class FbLoginFragment extends Fragment {
             }
 
             // Envoie du token au serveur.
-            ApiHelper apihelper = new ApiHelper(getContext());
+            ServeurApiHelper apihelper = new ServeurApiHelper(getContext());
             apihelper.sendFbToken(accessToken.getToken());
 
-            if (profile != null) {
+            /* Checking if the user is connected (so the current profil != null)
+            * We're checking too, if it's his first connexion or not
+            * If it's his first one, we have to set its home adress
+            * */
+            /*if (profile != null) {
                 Intent intent = new Intent(getActivity(), HomeActivity.class);
+                startActivity(intent);
+            }*/
+            if (profile != null) {
+                Intent intent = new Intent(getActivity(), CreatingAdressHomeActivity.class);
                 startActivity(intent);
             }
         }
@@ -88,7 +97,7 @@ public class FbLoginFragment extends Fragment {
                     .setNegativeButton("Retour",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    // ChoosePubActivity.this.finish();
+                                    // ChooseBarActivity.this.finish();
                                 }
                             }
                     );

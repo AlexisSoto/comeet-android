@@ -40,7 +40,7 @@
             android:textStyle="bold"
             android:textSize="25sp"/>
 
-        <android.support.design.widget.FloatingActionButton
+        <!--android.support.design.widget.FloatingActionButton
             app:fabSize="normal"
             android:id="@+id/btn_add_favorite_friend"
             android:src="@drawable/fab_add"
@@ -50,16 +50,15 @@
             android:onClick="addFavoriteFriend"
             android:layout_below="@id/profile_name"
             android:layout_margin="@dimen/fab_margin"
-            android:layout_centerHorizontal="true"/>
+            android:layout_centerHorizontal="true"/-->
 
-        <FrameLayout
+        <!--FrameLayout
             android:id="@+id/facebook_logout"
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:background="@android:color/transparent"
             android:layout_marginTop="19dp"
-            android:layout_below="@+id/btn_add_favorite_friend"
-            android:layout_centerHorizontal="true"/>
+            android:layout_centerHorizontal="true"/-->
 
     </RelativeLayout>
 
