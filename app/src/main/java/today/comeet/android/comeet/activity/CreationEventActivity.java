@@ -71,40 +71,26 @@ public class CreationEventActivity extends AppCompatActivity {
         calendar = Calendar.getInstance();
     }
 
-    // Boutton pour choisir la date
-    public void btn_ChooseDate(View v) {
-
-
-        dpd = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                date = year + "-" + (monthOfYear) + "-" + dayOfMonth;
-            }
-        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-        dpd.show();
+    public void editText_ChooseDate(View v){
+        EditText eventDate = (EditText) findViewById(R.id.event_date);
+        date = eventDate.getText().toString();
     }
 
-    // Boutton pour choisir l'heure
-    public void btn_Choosehour(View v) {
-        timepicker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                Log.d("heure", "hour: "+hourOfDay+ ", minute: "+minute);
-                heure = hourOfDay + ":" + minute + ":00";
-            }
-        },  calendar.get(Calendar.HOUR),  calendar.get(Calendar.MINUTE), true);
-        timepicker.setTitle("");
-        timepicker.show();
-
+    public void editText_ChooseHeure(View v){
+        EditText eventHour = (EditText) findViewById(R.id.event_hour);
+        heure = eventHour.getText().toString();
     }
 
     public void btn_launch_choose_bar(View v) {
+
+        editText_ChooseDate(v);
+        editText_ChooseHeure(v);
 
         String dateEtHeure = "";
         if (date != null)
             dateEtHeure += date;
         if (heure != null)
-            dateEtHeure += " " + heure;
+            dateEtHeure += " à " + heure;
 
         if (heure == null && date == null)
             dateEtHeure = "Non définit";
