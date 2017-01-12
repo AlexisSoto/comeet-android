@@ -76,6 +76,8 @@
         android:id="@+id/event_date"
         android:hint="30/01/2017"
         android:layout_centerVertical="true"
+        android:focusableInTouchMode="false"
+        android:onClick="ChooseDate"
         android:layout_alignParentStart="true" />
 
     <EditText
@@ -86,6 +88,8 @@
         android:id="@+id/event_hour"
         android:hint="12:00"
         android:layout_marginBottom="36dp"
+        android:focusableInTouchMode="false"
+        android:onClick="ChooseHour"
         android:layout_above="@+id/add_friends"
         android:layout_alignParentStart="true" />
 

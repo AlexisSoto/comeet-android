@@ -15,6 +15,7 @@ import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -46,7 +47,7 @@ import today.comeet.android.comeet.provider.EventContentProvider;
 
 public class CreationEventActivity extends AppCompatActivity {
 
-    private DatePickerDialog dpd = null;
+    private DatePickerDialog dpd;
     private TimePickerDialog timepicker;
     private EditText eventName;
     private EditText eventDescription;
@@ -58,6 +59,8 @@ public class CreationEventActivity extends AppCompatActivity {
     private ArrayList<String> listFriends;
     private Calendar calendar;
     private ArrayList<String> participant;
+    private EditText eventDate;
+    private EditText eventHour;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,22 +72,18 @@ public class CreationEventActivity extends AppCompatActivity {
 
         /* Using Calendar to get current date & hour*/
         calendar = Calendar.getInstance();
-    }
 
-    public void editText_ChooseDate(View v){
-        EditText eventDate = (EditText) findViewById(R.id.event_date);
-        date = eventDate.getText().toString();
-    }
+        /* Get EditText from hour and date*/
+        eventDate = (EditText) findViewById(R.id.event_date);
+        eventDate.setText(DateFormat.format("dd/MM/yyyy",calendar));
 
-    public void editText_ChooseHeure(View v){
-        EditText eventHour = (EditText) findViewById(R.id.event_hour);
-        heure = eventHour.getText().toString();
+        eventHour = (EditText) findViewById(R.id.event_hour);
+        eventHour.setText(DateFormat.format("HH:mm", calendar));
+
     }
 
     public void btn_launch_choose_bar(View v) {
 
-        editText_ChooseDate(v);
-        editText_ChooseHeure(v);
 
         String dateEtHeure = "";
         if (date != null)
@@ -118,15 +117,16 @@ public class CreationEventActivity extends AppCompatActivity {
         *
         * */
         if (participant == null)
-                intent.putExtra("participants", "aucun amis");
+            intent.putExtra("participants", "aucun amis");
         else
-            intent.putExtra("participants",participant);
+            intent.putExtra("participants", participant);
 
         startActivityForResult(intent, 1000);
     }
 
     /**
      * Method to get friends and launch the "ChooseFriendsActivity"
+     *
      * @param v
      */
 
@@ -135,7 +135,7 @@ public class CreationEventActivity extends AppCompatActivity {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
 
-        if (netInfo==null) {
+        if (netInfo == null) {
             Log.d("internet", "pas connexion");
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -168,7 +168,7 @@ public class CreationEventActivity extends AppCompatActivity {
         Profile profile = Profile.getCurrentProfile();
         if (profile != null) {
             Log.d("friend", "profile != null");
-            Log.d("friend", "profile name: "+profile.getName());
+            Log.d("friend", "profile name: " + profile.getName());
 
             // we will query the name with the openGraph API
             GraphRequest request = GraphRequest.newMeRequest(
@@ -191,7 +191,7 @@ public class CreationEventActivity extends AppCompatActivity {
                                 /*Launch ChooseFriends Activity*/
                                 Intent intent_friends = new Intent(getApplicationContext(), ChooseFriendsActivity.class);
                                 intent_friends.putExtra("friends_list", listFriends);
-                                startActivityForResult(intent_friends,2000);
+                                startActivityForResult(intent_friends, 2000);
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -236,4 +236,40 @@ public class CreationEventActivity extends AppCompatActivity {
 
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+    public void ChooseDate(View v) {
+        dpd = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                date = year + "-" + (monthOfYear) + "-" + dayOfMonth;
+
+                /*Priting result in Edittexet */
+                Calendar caltemp = Calendar.getInstance();
+                caltemp.set(year, monthOfYear, dayOfMonth);
+                eventDate.setText(DateFormat.format("dd/MM/yyyy",caltemp));
+
+            }
+        }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        dpd.show();
+    }
+
+    public void ChooseHour(View v) {
+        timepicker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                Log.d("heure", "hour: " + hourOfDay + ", minute: " + minute);
+                heure = hourOfDay + ":" + minute + ":00";
+
+                /* Printing in the EditText */
+                Calendar caltemp = Calendar.getInstance();
+                caltemp.set(0, 0, 0, hourOfDay, minute);
+                eventHour.setText(DateFormat.format("HH:mm",caltemp));
+
+            }
+        }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true);
+        timepicker.setTitle("");
+        timepicker.show();
+
+    }
+
 }
