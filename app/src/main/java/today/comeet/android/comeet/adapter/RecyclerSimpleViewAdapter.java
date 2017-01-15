@@ -9,6 +9,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import today.comeet.android.comeet.R;
+import today.comeet.android.comeet.model.Event;
 
 /**
  * Created by sachavent on 14/10/2016.
@@ -18,20 +19,20 @@ public class RecyclerSimpleViewAdapter extends RecyclerView.Adapter<RecyclerSimp
     /**
      * List items
      */
-    private List<String> items;
+    private List<Event> events;
     /**
      * the resource id of item Layout
      */
-    private int itemLayout;
+    private int eventLayout;
 
     /**
      * Constructor RecyclerSimpleViewAdapter
-     * @param items : the list items
-     * @param itemLayout : the resource id of itemView
+     * @param events : the list events
+     * @param eventLayout : the resource id of eventView
      */
-    public RecyclerSimpleViewAdapter(List<String> items, int itemLayout) {
-        this.items = items;
-        this.itemLayout = itemLayout;
+    public RecyclerSimpleViewAdapter(List<Event> events, int eventLayout) {
+        this.events = events;
+        this.eventLayout = eventLayout;
     }
 
     /**
@@ -42,7 +43,7 @@ public class RecyclerSimpleViewAdapter extends RecyclerView.Adapter<RecyclerSimp
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // get inflater and get view by resource id itemLayout
-        View v = LayoutInflater.from(parent.getContext()).inflate(itemLayout, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_event, parent, false);
         // return ViewHolder with View
         return new ViewHolder(v);
     }
@@ -53,7 +54,7 @@ public class RecyclerSimpleViewAdapter extends RecyclerView.Adapter<RecyclerSimp
      */
     @Override
     public int getItemCount() {
-        return items.size();
+        return events.size();
     }
 
 
@@ -65,27 +66,29 @@ public class RecyclerSimpleViewAdapter extends RecyclerView.Adapter<RecyclerSimp
     @Override
     public void onBindViewHolder(RecyclerSimpleViewAdapter.ViewHolder holder, int position) {
         // find item by position
-        String item = items.get(position);
+        Event event = events.get(position);
         // save information in holder, we have one type in this adapter
-        holder.primaryText.setText(item);
-        holder.itemView.setTag(item);
+        holder.nameText.setText(event.getName());
+        holder.dateText.setText(event.getDate());
     }
+
     /**
      *
      * Class viewHolder
      * Hold an textView
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        // TextViex
-        public TextView primaryText;
+
+        public TextView nameText;
+        public TextView dateText;
         /**
          * Constructor ViewHolder
-         * @param itemView: the itemView
+         * @param eventView: the itemView
          */
-        public ViewHolder(View itemView) {
-            super(itemView);
-            // link primaryText
-            primaryText = (TextView) itemView.findViewById(android.R.id.text1);
+        public ViewHolder(View eventView) {
+            super(eventView);
+            nameText = (TextView) eventView.findViewById(R.id.event_name);
+            dateText = (TextView) eventView.findViewById(R.id.event_date);
         }
     }
 }

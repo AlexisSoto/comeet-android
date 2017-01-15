@@ -5,6 +5,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="today.comeet.android.comeet.fragment.FirstFragment">
 
+    <FrameLayout
+        android:id="@+id/Profile_Fragment"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:background="@android:color/transparent"
+        android:layout_marginBottom="218dp"
+        android:layout_alignParentStart="true">
+
+    </FrameLayout>
+
     <android.support.design.widget.FloatingActionButton
         app:fabSize="normal"
         android:id="@+id/btn_plusss"
@@ -28,15 +38,7 @@
 
     </FrameLayout>
 
-    <FrameLayout
-        android:id="@+id/Profile_Fragment"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:background="@android:color/transparent"
-        android:layout_marginBottom="218dp"
-        android:layout_alignParentStart="true">
 
-    </FrameLayout>
 
 </FrameLayout>
 
