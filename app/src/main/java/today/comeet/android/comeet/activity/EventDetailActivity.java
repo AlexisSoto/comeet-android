@@ -44,7 +44,6 @@ public class EventDetailActivity extends AppCompatActivity {
     private String participants;
 
     /* Affichage des attributs de l'événement*/
-    private TextView txtEventName;
     private TextView txtEventDescription;
     private TextView txtEventLocalisation;
     private TextView txtEventDate;
@@ -70,7 +69,6 @@ public class EventDetailActivity extends AppCompatActivity {
             idEventToPrint++;
         }
 
-        txtEventName = (TextView) findViewById(R.id.nameEvent);
         txtEventDate = (TextView) findViewById(R.id.eventDate);
         txtEventDescription = (TextView) findViewById(R.id.descriptionEvent);
         txtEventLocalisation = (TextView) findViewById(R.id.eventlocalisation);
@@ -86,8 +84,8 @@ public class EventDetailActivity extends AppCompatActivity {
             eventDate = cursor.getString(4);
             participants = cursor.getString(7);
         }
+        setTitle(eventName);
         // Printing in TextView
-        txtEventName.append(eventName);
         txtEventDate.append(eventDate);
         txtEventDescription.append(eventDescription);
         if (eventLocalisation != null)
