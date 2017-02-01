@@ -58,20 +58,30 @@ public class FbLoginFragment extends Fragment {
 
             // Envoie du token au serveur.
             ServeurApiHelper apihelper = new ServeurApiHelper(getContext());
-            apihelper.sendFbToken(accessToken.getToken());
+            apihelper.sendFbTokenAndCheckNewUser(accessToken.getToken(), new ServeurApiHelper.VolleyCallback() {
+                @Override
+                public void onSuccess(String result) {
+                    //Log.d("store", "retour dans fblogin: "+result);
 
-            /* Checking if the user is connected (so the current profil != null)
-            * We're checking too, if it's his first connexion or not
-            * If it's his first one, we have to set its home adress
-            * */
-            /*if (profile != null) {
-                Intent intent = new Intent(getActivity(), HomeActivity.class);
-                startActivity(intent);
-            }*/
-            if (profile != null) {
-                Intent intent = new Intent(getActivity(), CreatingAdressHomeActivity.class);
-                startActivity(intent);
-            }
+                    /**If new user */
+                    if (result== "true") {
+                        Profile profile = Profile.getCurrentProfile();
+                        if (profile != null) {
+                            Intent intent = new Intent(getActivity(), CreatingAdressHomeActivity.class);
+                            startActivity(intent);
+                        }
+                    }
+
+                    /** Old user so they're going to the homepage */
+                    else {
+                        Profile profile = Profile.getCurrentProfile();
+                        if (profile != null) {
+                            Intent intent = new Intent(getActivity(), HomeActivity.class);
+                            startActivity(intent);
+                        }
+                    }
+                }
+            });
         }
 
         @Override
@@ -166,7 +176,24 @@ public class FbLoginFragment extends Fragment {
         // Check that we are on LogginActivity
         if (getActivity().getClass().toString().equals("class today.comeet.android.comeet.activity.LoginActivity"))  {
             if (accessToken != null) {
-                startActivity(new Intent(this.getContext(), HomeActivity.class));
+                ServeurApiHelper apihelper = new ServeurApiHelper(getContext());
+                apihelper.isItNewUser(new ServeurApiHelper.VolleyCallback() {
+                    @Override
+                    public void onSuccess(String result) {
+
+                        if (result=="true") {
+                            Intent intent = new Intent(getActivity(), CreatingAdressHomeActivity.class);
+                            startActivity(intent);
+                        } else {
+                            Intent intent = new Intent(getActivity(), HomeActivity.class);
+                            startActivity(intent);
+                        }
+
+                    }
+                });
+
+
+
             }
         }
     }

@@ -38,13 +38,13 @@ public class ServeurApiHelper {
         contexte = context;
     }
 
-    public void sendFbToken(final String token) {
+    public void sendFbTokenAndCheckNewUser(final String token, final VolleyCallback callback) {
         StringRequest MyStringRequest = new StringRequest(Request.Method.POST, this.url + "/login", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
-                Log.d("test", "reponse: " + response.toString());
+                //Log.d("test", "reponse: " + response.toString());
                 try {
                     JSONObject jsontoken = new JSONObject(response);
                     String serveurToken = jsontoken.getString("token");
@@ -53,8 +53,13 @@ public class ServeurApiHelper {
                     savingToken(serveurToken);
 
                     /**Is it a new user?*/
-                    getUserDetail();
-
+                    isItNewUser(new VolleyCallback() {
+                        @Override
+                        public void onSuccess(String result) {
+                            //Log.d("store", "retour is it new user: "+result);
+                            callback.onSuccess("true");
+                        }
+                    });
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -75,33 +80,36 @@ public class ServeurApiHelper {
         };
 
         queue.add(MyStringRequest);
-
-        /** Checking if it's a new user*/
-        getUserDetail();
     }
 
-    public boolean isItNewUser() {
-        //JSONObject[] jsonuser = getUserDetail();
-        //Log.d("stored", "user detail recieved: " + jsonuser);
+    public void isItNewUser(final VolleyCallback callback) {
+        getUserDetail(new VolleyCallback() {
+            @Override
+            public void onSuccess(String result) {
+                try {
+                    JSONObject jsonuser = new JSONObject(result);
+                    if (jsonuser.getString("homeLocation").equals("null")) {
+                        //Log.d("store", "nouvel utilisateur ");
+                        callback.onSuccess("true");
+                    } else {
+                        //Log.d("store","pas nouvel utilisateur ");
+                    }
 
-
-        return true;
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
-    public void getUserDetail() {
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, this.url + "/me?token="+gettingToken(),
+    public void getUserDetail(final VolleyCallback callback) {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, this.url + "/me?token=" + gettingToken(),
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        try {
-                            Log.d("stored", "user detail recieved: " + response);
-
-                            /**Getting UserJson*/
-                            JSONObject jsonuser = new JSONObject(response);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
+                        //Log.d("store","result getuserdetail: "+response);
+                        /**Prevent that we got the information*/
+                        callback.onSuccess(response);
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -150,6 +158,10 @@ public class ServeurApiHelper {
             e.printStackTrace();
         }
         return "";
+    }
+
+    public interface VolleyCallback {
+        void onSuccess(String result);
     }
 
 
