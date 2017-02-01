@@ -25,6 +25,7 @@ import today.comeet.android.comeet.R;
 import today.comeet.android.comeet.helper.ConverterHelper;
 import today.comeet.android.comeet.helper.DBHelper;
 import today.comeet.android.comeet.helper.GoogleApiHelper;
+import today.comeet.android.comeet.helper.ServeurApiHelper;
 import today.comeet.android.comeet.modules.ImageLoadTask;
 import today.comeet.android.comeet.provider.EventContentProvider;
 
@@ -179,6 +180,9 @@ public class ChooseBarActivity extends AppCompatActivity {
 
         Uri result = getContentResolver().insert(EventContentProvider.CONTENT_URL, contentValues);
 
+        /**Enregistrement de l'événement coté serveur*/
+        ServeurApiHelper apihelper = new ServeurApiHelper(getApplicationContext());
+        Log.d("store", "token: "+apihelper.gettingToken());
 
         notification();
 
