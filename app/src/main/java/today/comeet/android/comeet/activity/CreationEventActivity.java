@@ -62,6 +62,7 @@ public class CreationEventActivity extends AppCompatActivity {
     private Calendar calendar;
     private ArrayList<String> participant;
     private EditText eventDate;
+    private String participants;
     private EditText eventHour;
 
     @Override
@@ -122,20 +123,6 @@ public class CreationEventActivity extends AppCompatActivity {
             intent.putExtra("participants", "aucun amis");
         else
             intent.putExtra("participants", participant);
-
-        /**Sending participants to the server
-         * First we need to convert the Array<String> to </String>
-         * */
-        ServeurApiHelper apihelper = new ServeurApiHelper(getApplicationContext());
-        ConverterHelper converterHelper = new ConverterHelper();
-        String participants = converterHelper.convertArrayToString(participant);
-
-        apihelper.setParticipantsEvent(participants,new ServeurApiHelper.VolleyCallback() {
-            @Override
-            public void onSuccess(String result) {
-
-            }
-        });
 
         startActivityForResult(intent, 1000);
     }

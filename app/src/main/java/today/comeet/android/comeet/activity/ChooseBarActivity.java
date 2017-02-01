@@ -40,6 +40,7 @@ public class ChooseBarActivity extends AppCompatActivity {
     private ImageView img_bar;
     private TextView numberResult;
     private String participants;
+    private LatLng latlng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,10 +79,80 @@ public class ChooseBarActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
-        // retrieve bar from google nearby shearch
+        /**Cherching best pubs arround this LatLng including all participants */
+        ServeurApiHelper apihelper = new ServeurApiHelper(getApplicationContext());
+        Log.d("participant", "participants: " + participants);
+        if (!participants.equals("aucun amis")) {
+            Log.d("participant", "des amis");
+
+            apihelper.setParticipantsEvent(participants, new ServeurApiHelper.VolleyCallback() {
+                @Override
+                public void onSuccess(String result) {
+
+                }
+            });
+        } else {
+
+            /**Getting home location from the connected user */
+            Log.d("participant", "aucun amis");
+
+            apihelper.getUserDetail(new ServeurApiHelper.VolleyCallback() {
+                @Override
+                public void onSuccess(String result) {
+                    try {
+                        JSONObject jsonuser = new JSONObject(result);
+                        latlng = new LatLng((Double) jsonuser.getJSONObject("homeLocation").get("latitude"), (Double) jsonuser.getJSONObject("homeLocation").get("longitude"));
+                        /**Searching Place arround the specified Latlng */
+                        searchingBarByGooglePlace(latlng);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    /* Load  retrieve data to Textview, imageview etc */
+    private void LoadContentbyIndex(int index) {
+        try {
+
+            txtgetbar.setText("Nom: " + listebar.getJSONObject(index).getString("name") + "\nLocalisation: " + listebar.getJSONObject(index).getString("vicinity"));
+            numberResult.setText("resultat " + (indextoShow + 1) + " sur " + listebar.length());
+
+            // Check if any photo is existing
+            if (!listebar.getJSONObject(index).isNull("photos")) {
+                // Get photo reference from google api
+                Log.d("photo", "photo ref: " + listebar.getJSONObject(index).getJSONArray("photos").getJSONObject(0).getString("photo_reference"));
+                String URLimg = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=" + listebar.getJSONObject(index).getJSONArray("photos").getJSONObject(0).getString("photo_reference") + "&key=AIzaSyD7PnqYzH87nWyRlfdYR94O8nFLsq3Y-ik";
+                Log.d("photo", "URL MAIN JAVA: " + "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&" + listebar.getJSONObject(index).getJSONArray("photos").getJSONObject(0).getString("photo_reference") + "&key=AIzaSyD7PnqYzH87nWyRlfdYR94O8nFLsq3Y-ik");
+                Log.d("photo", "URL MAIN JAVA: " + URLimg);
+
+                // Load picture from URL
+                new ImageLoadTask(URLimg, img_bar).execute();
+            } else {
+                // No picture so transparent
+                img_bar.setImageResource(android.R.color.transparent);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void searchingBarByGooglePlace (LatLng latlng) {
         GoogleApiHelper googleapihelper = new GoogleApiHelper(this);
-        // Get user geolocalisation
-        LatLng latlng = new LatLng(48.737378, 2.423581);
+        // retrieve bar from google nearby shearch
         googleapihelper.retrieveNearbyPlaceData(latlng, 500, "bar", new GoogleApiHelper.VolleyCallback() {
             @Override
             public void onSuccess(String result) {
@@ -108,43 +179,6 @@ public class ChooseBarActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-    /* Load  retrieve data to Textview, imageview etc */
-    private void LoadContentbyIndex(int index) {
-        try {
-
-            txtgetbar.setText("Nom: " + listebar.getJSONObject(index).getString("name") + "\nLocalisation: " + listebar.getJSONObject(index).getString("vicinity"));
-            numberResult.setText("resultat "+(indextoShow+1)+" sur "+listebar.length());
-
-            // Check if any photo is existing
-            if (!listebar.getJSONObject(index).isNull("photos")) {
-                // Get photo reference from google api
-                Log.d("photo", "photo ref: " + listebar.getJSONObject(index).getJSONArray("photos").getJSONObject(0).getString("photo_reference"));
-                String URLimg = "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=" + listebar.getJSONObject(index).getJSONArray("photos").getJSONObject(0).getString("photo_reference") + "&key=AIzaSyD7PnqYzH87nWyRlfdYR94O8nFLsq3Y-ik";
-                Log.d("photo", "URL MAIN JAVA: " + "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&" + listebar.getJSONObject(index).getJSONArray("photos").getJSONObject(0).getString("photo_reference") + "&key=AIzaSyD7PnqYzH87nWyRlfdYR94O8nFLsq3Y-ik");
-                Log.d("photo", "URL MAIN JAVA: " + URLimg);
-
-                // Load picture from URL
-                new ImageLoadTask(URLimg, img_bar).execute();
-            } else {
-                // No picture so transparent
-                img_bar.setImageResource(android.R.color.transparent);
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
     public void btn_next_bar(View v) {
