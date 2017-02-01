@@ -116,7 +116,7 @@ public class ServeurApiHelper {
         Log.d("test", "token: "+gettingToken());
         Log.d("test", "participants: "+participantsEvent);
 
-        final StringRequest MyStringRequest = new StringRequest(Request.Method.PUT, this.url + "/location?token=" + gettingToken(), new Response.Listener<String>() {
+        final StringRequest MyStringRequest = new StringRequest(Request.Method.POST, this.url + "/location?token=" + gettingToken(), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d("test", "reponse: " + response.toString());
@@ -132,7 +132,7 @@ public class ServeurApiHelper {
         }) {
             protected Map<String, String> getParams() {
                 Map<String, String> MyData = new HashMap<String, String>();
-                MyData.put("participants",  participantsEvent);
+                MyData.put("usersName",  participantsEvent);
                 return MyData;
             }
         };

@@ -12,7 +12,7 @@ public class ConverterHelper {
 
     public ConverterHelper() {}
 
-    public  String strSeparator = ", ";
+    public  String strSeparator = ",";
     public  String convertArrayToString(ArrayList<String> array){
         String str = "";
         for (int i = 0;i<array.size(); i++) {
