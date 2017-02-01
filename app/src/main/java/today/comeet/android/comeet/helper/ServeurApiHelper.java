@@ -10,6 +10,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -82,17 +83,79 @@ public class ServeurApiHelper {
         queue.add(MyStringRequest);
     }
 
+    public void setHomeLocation(final LatLng home, final VolleyCallback callback, final String adresse) {
+        Log.d("test", "token: "+gettingToken());
+        final StringRequest MyStringRequest = new StringRequest(Request.Method.PUT, this.url + "/me?token=" + gettingToken(), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("test", "reponse: " + response.toString());
+                callback.onSuccess(response);
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("test", "error home"+error.getMessage());
+            } //Create an error listener to handle errors appropriately.
+
+        }) {
+            protected Map<String, String> getParams() {
+                Map<String, String> MyData = new HashMap<String, String>();
+                MyData.put("latitude",  String.valueOf(home.latitude));
+                MyData.put("longitude",  String.valueOf(home.longitude));
+                MyData.put("adresse",  adresse);
+                return MyData;
+            }
+        };
+
+        queue.add(MyStringRequest);
+
+    }
+
+    public void setParticipantsEvent( final String participantsEvent, final VolleyCallback callback) {
+        Log.d("test", "token: "+gettingToken());
+        Log.d("test", "participants: "+participantsEvent);
+
+        final StringRequest MyStringRequest = new StringRequest(Request.Method.PUT, this.url + "/location?token=" + gettingToken(), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("test", "reponse: " + response.toString());
+                callback.onSuccess(response);
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("test", "error participants "+error.getMessage());
+            } //Create an error listener to handle errors appropriately.
+
+        }) {
+            protected Map<String, String> getParams() {
+                Map<String, String> MyData = new HashMap<String, String>();
+                MyData.put("participants",  participantsEvent);
+                return MyData;
+            }
+        };
+
+        queue.add(MyStringRequest);
+
+    }
+
+
+
+
     public void isItNewUser(final VolleyCallback callback) {
         getUserDetail(new VolleyCallback() {
             @Override
             public void onSuccess(String result) {
                 try {
                     JSONObject jsonuser = new JSONObject(result);
-                    if (jsonuser.getString("homeLocation").equals("null")) {
-                        //Log.d("store", "nouvel utilisateur ");
+                    if (jsonuser.isNull("homeLocation")) {
+                       // Log.d("store", "nouvel utilisateur ");
                         callback.onSuccess("true");
                     } else {
-                        //Log.d("store","pas nouvel utilisateur ");
+                        callback.onSuccess("false");
+                       // Log.d("store","pas nouvel utilisateur ");
                     }
 
                 } catch (JSONException e) {

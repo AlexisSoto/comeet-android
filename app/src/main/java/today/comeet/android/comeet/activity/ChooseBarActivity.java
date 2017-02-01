@@ -182,7 +182,7 @@ public class ChooseBarActivity extends AppCompatActivity {
 
         /**Enregistrement de l'événement coté serveur*/
         ServeurApiHelper apihelper = new ServeurApiHelper(getApplicationContext());
-        Log.d("store", "token: "+apihelper.gettingToken());
+
 
         notification();
 

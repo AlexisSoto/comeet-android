@@ -40,8 +40,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import today.comeet.android.comeet.helper.ConverterHelper;
 import today.comeet.android.comeet.helper.DBHelper;
 import today.comeet.android.comeet.R;
+import today.comeet.android.comeet.helper.ServeurApiHelper;
 import today.comeet.android.comeet.provider.EventContentProvider;
 
 
@@ -120,6 +122,20 @@ public class CreationEventActivity extends AppCompatActivity {
             intent.putExtra("participants", "aucun amis");
         else
             intent.putExtra("participants", participant);
+
+        /**Sending participants to the server
+         * First we need to convert the Array<String> to </String>
+         * */
+        ServeurApiHelper apihelper = new ServeurApiHelper(getApplicationContext());
+        ConverterHelper converterHelper = new ConverterHelper();
+        String participants = converterHelper.convertArrayToString(participant);
+
+        apihelper.setParticipantsEvent(participants,new ServeurApiHelper.VolleyCallback() {
+            @Override
+            public void onSuccess(String result) {
+
+            }
+        });
 
         startActivityForResult(intent, 1000);
     }

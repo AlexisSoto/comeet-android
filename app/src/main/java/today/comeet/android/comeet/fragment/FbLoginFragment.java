@@ -22,6 +22,8 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
 
+import java.util.Objects;
+
 import today.comeet.android.comeet.R;
 import today.comeet.android.comeet.activity.CreatingAdressHomeActivity;
 import today.comeet.android.comeet.activity.HomeActivity;
@@ -61,7 +63,7 @@ public class FbLoginFragment extends Fragment {
             apihelper.sendFbTokenAndCheckNewUser(accessToken.getToken(), new ServeurApiHelper.VolleyCallback() {
                 @Override
                 public void onSuccess(String result) {
-                    //Log.d("store", "retour dans fblogin: "+result);
+                    Log.d("store", "retour dans fblogin: "+result);
 
                     /**If new user */
                     if (result== "true") {
@@ -173,6 +175,7 @@ public class FbLoginFragment extends Fragment {
         // Load HomeActivity if user is logged in
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
 
+        /** Redirecting the user if he is correctly registered or not*/
         // Check that we are on LogginActivity
         if (getActivity().getClass().toString().equals("class today.comeet.android.comeet.activity.LoginActivity"))  {
             if (accessToken != null) {
@@ -180,11 +183,14 @@ public class FbLoginFragment extends Fragment {
                 apihelper.isItNewUser(new ServeurApiHelper.VolleyCallback() {
                     @Override
                     public void onSuccess(String result) {
+                       // Log.d("store","result "+result);
 
-                        if (result=="true") {
+                        if (Objects.equals(result, "true")) {
+                            //Log.d("store","ici");
                             Intent intent = new Intent(getActivity(), CreatingAdressHomeActivity.class);
                             startActivity(intent);
                         } else {
+                            //Log.d("store","la");
                             Intent intent = new Intent(getActivity(), HomeActivity.class);
                             startActivity(intent);
                         }

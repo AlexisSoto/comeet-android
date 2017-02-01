@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.facebook.Profile;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
@@ -13,8 +14,10 @@ import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 
 import today.comeet.android.comeet.R;
+import today.comeet.android.comeet.helper.ServeurApiHelper;
 
 public class CreatingAdressHomeActivity extends AppCompatActivity {
+    private Place placeSelected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +40,8 @@ public class CreatingAdressHomeActivity extends AppCompatActivity {
             public void onPlaceSelected(Place place) {
                 // TODO: Get info about the selected place.
                 Log.i("googleplace", "Place: " + place.getName());//get place details here
+                Log.i("googleplace", "Place: " + place.getLatLng());//get place details here
+                placeSelected = place;
             }
 
             @Override
@@ -47,8 +52,20 @@ public class CreatingAdressHomeActivity extends AppCompatActivity {
         });
     }
 
-    public void btn_save_address (View v) {
+    public void btn_save_address(View v) {
+        Log.d("googleplace", "Place recieved: " + placeSelected.getName());
+        Log.d("googleplace", "Place recieved: " + placeSelected.getLatLng());
+
+        ServeurApiHelper apihelper = new ServeurApiHelper(this);
+        apihelper.setHomeLocation(placeSelected.getLatLng(), new ServeurApiHelper.VolleyCallback() {
+            @Override
+            public void onSuccess(String result) {
+
+            }
+        }, (String) placeSelected.getName());
+
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
+
     }
 }
