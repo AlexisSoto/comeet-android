@@ -161,6 +161,7 @@ public class ChooseBarActivity extends AppCompatActivity {
     public void searchingBarByGooglePlace (LatLng latlng) {
         GoogleApiHelper googleapihelper = new GoogleApiHelper(this);
         // retrieve bar from google nearby shearch
+        googleapihelper.retrieveNearbyPlaceData(latlng, 1500, "bar", new GoogleApiHelper.VolleyCallback() {
             @Override
             public void onSuccess(String result) {
                 try {
