@@ -87,15 +87,15 @@ public class CreationEventActivity extends AppCompatActivity {
 
     public void btn_launch_choose_bar(View v) {
 
-
         String dateEtHeure = "";
-        if (date != null)
-            dateEtHeure += date;
-        if (heure != null)
-            dateEtHeure += " à " + heure;
+        if (date== null) {
+            date=eventDate.getText().toString();
+        }
 
-        if (heure == null && date == null)
-            dateEtHeure = "Non définit";
+        if (heure==null) {
+            heure=eventHour.getText().toString();
+        }
+        dateEtHeure+= date + " à " +heure;
 
         // Launch ChooseBarActivity
         Intent intent = new Intent(getApplicationContext(), ChooseBarActivity.class);
